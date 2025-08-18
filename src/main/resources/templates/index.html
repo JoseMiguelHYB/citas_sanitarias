@@ -1,10 +1,35 @@
+<!-- En realidad este index.html no usa NADA en thymleaf pero
+	se encuentra en templates porque tiene un HomeController.java que lo
+	redirige a localhost:8080/ -->
+
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8">
-		<title>Inicio</title>
-	</head>
-	<body>
-		<h1>Bienvenido a Citas Sanitari77as</h1>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Portal de salud - Inicio</title>
+
+	<!-- Meta recomendadas -->
+	<meta name="description" content="Portal de citas médicas. Accede como paciente o médico. " />
+
+	<!-- Favicon (opcional, crea /static/img/favicon.ico) -->
+	<link rel="icon" href="img/favicon.ico" />
+
+	<!-- Estilos -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Script principal -->
+	<script defer src="js/main.js"></script>
+</head>
+
+<body>
+	<div class="container-login">
+		<h2>🏥 Portal de salud</h2>
+		<p>Selecciona tu rol</p>
+		<a href="/paciente" class="btn-paciente">Paciente</a>
+		<a href="/medico" class="btn-medico">Médico</a>
+	</div>
+</body>
+
 </html>
