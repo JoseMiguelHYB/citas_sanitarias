@@ -1,25 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Pacientes</title>
-</head>
-<body>
-    <h2>Pacientes registrados</h2>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
+<head>
+	<meta charset="UTF-8">
+	<title>Lista de Pacientes</title>
+	<!-- Estilos también usa thymeleaf -->
+	<link rel="stylesheet" th:href="@{/css/style_pacientes.css}">
+</head>
+
+<body>
+	<h1>Listado de Pacientes</h1>
+
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Nombres</th>
+			<th>Apellidos</th>
+			<th>Password</th>
 			<th>DNI</th>
-        </tr>
-        <tr th:each="paciente : ${pacientes}">
-            <td th:text="${paciente.id}"></td>
-            <td th:text="${paciente.nombre}"></td>
-            <td th:text="${paciente.email}"></td>
-			<td th:text="${paciente.dni}"></td>
-        </tr>
-    </table>
+			<th>Fecha de Nacimiento</th>		
+			<th>Email</th>
+			<th>Teléfono</th>
+			<th>Dirección</th>
+			<th>Localidad</th>
+			<th>Código Postal</th>
+			<th>Genéro</th> 
+			<th>Número de la Seguridad Social</th> <!-- lo especifico -->
+			<th>Grupo Sanguíneo</th>
+			<th>Alergías</th>
+			<th>Contacto de Emergencia</th>
+			<th>Seguro médico/mutua</th>
+		</tr>
+		<tr th:each="paciente : ${pacientes}">
+			<td th:text="${paciente.id}">1</td>
+			<td th:text="${paciente.nombre}">Nombres</td>
+			<td th:text="${paciente.apellido}">Apellidos</td>
+			<td th:text="${paciente.password}">Password</td>
+			<td th:text="${paciente.dni}">DNI</td>
+			<td th:text="${paciente.fechaNacimiento}">Fecha de Nacimiento</td> <!-- Este es el campo del objeto Paciente.java -->
+			<td th:text="${paciente.email}">Email</td>
+			<td th:text="${paciente.telefono}">Teléfono</td>
+			<td th:text="${paciente.direccion}">Dirección</td>
+			<td th:text="${paciente.localidad}">Localidad</td>
+			<td th:text="${paciente.codigoPostal}">Código Postal</td>
+			<td th:text="${paciente.genero}">Genéro</td>
+			<td th:text="${paciente.numeroSeguridadSocial}">Número Seguridad Social</td>
+			<td th:text="${paciente.grupoSanguineo}">Grupo Sanguíneo</td>
+			<td th:text="${paciente.alergias}">Alergías</td>
+			<td th:text="${paciente.contactoEmergencia}">Contacto de Emergencia</td>
+			<td th:text="${paciente.seguroMedicoMutua}">Seguro Médico/Mutua</td>
+		</tr>
+	</table>
 </body>
+
 </html>
