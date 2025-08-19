@@ -63,34 +63,98 @@ INSERT INTO pacientes (nombres, apellidos, password, dni, fecha_nacimiento, emai
 
 ----------------------------------- Insertar médicos
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Luis', 'Martínez', 'medico123', '23456789A', '1970-03-15', 'luis.martinez@hospital.com', '611223344', 'M', 'Cardiología', 'COL12345', '08:00:00', '15:00:00', '101', 'Centro Salud Madrid Norte', 'C/ Salud 1, Madrid', '28001');
+('Dr. Luis', 'Martínez', 'medico123', '23456789A', '1970-03-15', 'luis.martinez@hospital.com', '611223344', 'M', 'Cardiología', 'COL12345', '08:00:00', '15:00:00', '101', 'Centro Salud Madrid Norte', 'C/ Salud 1, Madrid', '28001');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Ana', 'García', 'claveAna', '34567890B', '1980-07-20', 'ana.garcia@hospital.com', '622334455', 'F', 'Pediatría', 'COL23456', '09:00:00', '14:00:00', '102', 'Centro Salud Madrid Sur', 'Av. Infancia 10, Madrid', '28002');
+('Dra. Ana', 'García', 'claveAna', '34567890B', '1980-07-20', 'ana.garcia@hospital.com', '622334455', 'F', 'Pediatría', 'COL23456', '09:00:00', '14:00:00', '102', 'Centro Salud Madrid Sur', 'Av. Infancia 10, Madrid', '28002');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Javier', 'López', 'javilopez', '45678901C', '1975-11-05', 'javier.lopez@hospital.com', '633445566', 'M', 'Traumatología', 'COL34567', '10:00:00', '17:00:00', '201', 'Hospital General Madrid', 'C/ Traumas 8, Madrid', '28003');
+('Dr. Javier', 'López', 'javilopez', '45678901C', '1975-11-05', 'javier.lopez@hospital.com', '633445566', 'M', 'Traumatología', 'COL34567', '10:00:00', '17:00:00', '201', 'Hospital General Madrid', 'C/ Traumas 8, Madrid', '28003');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('María', 'Fernández', 'mariaF123', '56789012D', '1985-02-12', 'maria.fernandez@hospital.com', '644556677', 'F', 'Dermatología', 'COL45678', '08:30:00', '13:30:00', '202', 'Centro Salud Chamartín', 'C/ Piel 4, Madrid', '28004');
+('Dra. María', 'Fernández', 'mariaF123', '56789012D', '1985-02-12', 'maria.fernandez@hospital.com', '644556677', 'F', 'Dermatología', 'COL45678', '08:30:00', '13:30:00', '202', 'Centro Salud Chamartín', 'C/ Piel 4, Madrid', '28004');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Carlos', 'Ruiz', 'carlosruiz', '67890123E', '1978-09-25', 'carlos.ruiz@hospital.com', '655667788', 'M', 'Neurología', 'COL56789', '11:00:00', '18:00:00', '301', 'Hospital Universitario La Paz', 'Paseo Castellana 261, Madrid', '28005');
+('Dr. Carlos', 'Ruiz', 'carlosruiz', '67890123E', '1978-09-25', 'carlos.ruiz@hospital.com', '655667788', 'M', 'Neurología', 'COL56789', '11:00:00', '18:00:00', '301', 'Hospital Universitario La Paz', 'Paseo Castellana 261, Madrid', '28005');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Elena', 'Sánchez', 'elenaS', '78901234F', '1990-06-18', 'elena.sanchez@hospital.com', '666778899', 'F', 'Ginecología', 'COL67890', '08:00:00', '14:00:00', '302', 'Clínica Salud Mujer', 'Av. Libertad 12, Madrid', '28006');
+('Dra. Elena', 'Sánchez', 'elenaS', '78901234F', '1990-06-18', 'elena.sanchez@hospital.com', '666778899', 'F', 'Ginecología', 'COL67890', '08:00:00', '14:00:00', '302', 'Clínica Salud Mujer', 'Av. Libertad 12, Madrid', '28006');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Fernando', 'Morales', 'fernandoM', '89012345G', '1969-01-30', 'fernando.morales@hospital.com', '677889900', 'M', 'Oncología', 'COL78901', '09:30:00', '16:30:00', '401', 'Hospital Clínico San Carlos', 'C/ Cáncer 7, Madrid', '28007');
+('Dr. Fernando', 'Morales', 'fernandoM', '89012345G', '1969-01-30', 'fernando.morales@hospital.com', '677889900', 'M', 'Oncología', 'COL78901', '09:30:00', '16:30:00', '401', 'Hospital Clínico San Carlos', 'C/ Cáncer 7, Madrid', '28007');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Isabel', 'Torres', 'isabelT', '90123456H', '1982-12-08', 'isabel.torres@hospital.com', '688990011', 'F', 'Psiquiatría', 'COL89012', '12:00:00', '19:00:00', '402', 'Centro Salud Mental Madrid', 'C/ Paz 14, Madrid', '28008');
+('Dra. Isabel', 'Torres', 'isabelT', '90123456H', '1982-12-08', 'isabel.torres@hospital.com', '688990011', 'F', 'Psiquiatría', 'COL89012', '12:00:00', '19:00:00', '402', 'Centro Salud Mental Madrid', 'C/ Paz 14, Madrid', '28008');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Miguel', 'Hernández', 'miguelH', '01234567I', '1973-04-22', 'miguel.hernandez@hospital.com', '699001122', 'M', 'Endocrinología', 'COL90123', '07:00:00', '14:00:00', '501', 'Hospital Ramón y Cajal', 'C/ Hormonas 5, Madrid', '28009');
+('Dr. Miguel', 'Hernández', 'miguelH', '01234567I', '1973-04-22', 'miguel.hernandez@hospital.com', '699001122', 'M', 'Endocrinología', 'COL90123', '07:00:00', '14:00:00', '501', 'Hospital Ramón y Cajal', 'C/ Hormonas 5, Madrid', '28009');
 
 INSERT INTO medicos (nombres, apellidos, password, dni, fecha_nacimiento, email, telefono, genero, especialidad, numero_colegiado, hora_inicio, hora_fin, consulta, centro_salud, direccion_centro, codigo_postal_centro) VALUES 
-('Laura', 'Domínguez', 'lauraD', '12345678J', '1992-10-11', 'laura.dominguez@hospital.com', '600112233', 'F', 'Oftalmología', 'COL01234', '10:00:00', '17:00:00', '502', 'Clínica de la Vista Madrid', 'Av. Luz 9, Madrid', '28010');
+('Dra. Laura', 'Domínguez', 'lauraD', '12345678J', '1992-10-11', 'laura.dominguez@hospital.com', '600112233', 'F', 'Oftalmología', 'COL01234', '10:00:00', '17:00:00', '502', 'Clínica de la Vista Madrid', 'Av. Luz 9, Madrid', '28010');
+
+----------------------------------- Insertar citas
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(1, 1, '2025-09-01', '09:00:00', 'Chequeo rutinario', 'PENDIENTE', 'Presencial', 'Centro Salud Madrid Norte - Consulta 101', 'Primera cita del paciente con el cardiólogo.', 30);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(2, 2, '2025-09-01', '10:15:00', 'Dolor abdominal en niño', 'CONFIRMADA', 'Telefonica', 'Centro Salud Madrid Sur - Consulta 102', 'La madre acompañará al paciente.', 20);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(3, 3, '2025-09-02', '11:30:00', 'Dolor de rodilla tras accidente', 'PENDIENTE', 'Presencial', 'Hospital General Madrid - Consulta 201', 'Paciente deportista, revisión traumatológica.', 40);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(4, 4, '2025-09-03', '08:45:00', 'Revisión lunar sospechoso', 'CONFIRMADA', 'Presencial', 'Centro Salud Chamartín - Consulta 202', 'Posible biopsia.', 25);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(5, 5, '2025-09-03', '12:00:00', 'Dolores de cabeza frecuentes', 'PENDIENTE', 'Telefonica', 'Hospital Universitario La Paz - Consulta 301', 'Paciente refiere migrañas desde hace meses.', 30);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(6, 6, '2025-09-04', '09:15:00', 'Control embarazo 2º trimestre', 'CONFIRMADA', 'Presencial', 'Clínica Salud Mujer - Consulta 302', 'Paciente trae ecografía previa.', 40);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(7, 7, '2025-09-05', '10:30:00', 'Seguimiento cáncer de colon', 'PENDIENTE', 'Presencial', 'Hospital Clínico San Carlos - Consulta 401', 'Paciente en tratamiento de quimioterapia.', 50);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(8, 8, '2025-09-06', '13:00:00', 'Ansiedad y depresión', 'PENDIENTE', 'Online', 'Centro Salud Mental Madrid - Consulta 402', 'Paciente prefiere cita online.', 60);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(9, 9, '2025-09-07', '07:30:00', 'Control diabetes', 'CONFIRMADA', 'Presencial', 'Hospital Ramón y Cajal - Consulta 501', 'Se realizará analítica previa.', 20);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(10, 10, '2025-09-07', '11:00:00', 'Revisión miopía', 'PENDIENTE', 'Presencial', 'Clínica de la Vista Madrid - Consulta 502', 'Paciente con historial de cirugía láser.', 30);
+
+-- 11 a 20
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(1, 2, '2025-09-08', '09:00:00', 'Revisión pediátrica', 'REALIZADA', 'Presencial', 'Centro Salud Madrid Sur - Consulta 102', 'Cita completada sin incidencias.', 15);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(2, 4, '2025-09-09', '10:30:00', 'Problema en la piel', 'CANCELADA', 'Telefonica', 'Centro Salud Chamartín - Consulta 202', 'Paciente no acudió a la cita.', 0);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(3, 6, '2025-09-10', '08:00:00', 'Control ginecológico', 'PENDIENTE', 'Presencial', 'Clínica Salud Mujer - Consulta 302', 'Primera revisión anual.', 25);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(4, 8, '2025-09-11', '12:00:00', 'Tratamiento ansiedad', 'CONFIRMADA', 'Online', 'Centro Salud Mental Madrid - Consulta 402', 'Paciente requiere seguimiento mensual.', 45);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(5, 10, '2025-09-12', '09:30:00', 'Revisión lentes de contacto', 'PENDIENTE', 'Presencial', 'Clínica de la Vista Madrid - Consulta 502', 'Paciente refiere molestias oculares.', 20);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(6, 1, '2025-09-13', '11:00:00', 'Chequeo cardiológico', 'PENDIENTE', 'Telefonica', 'Centro Salud Madrid Norte - Consulta 101', 'Control de hipertensión.', 30);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(7, 3, '2025-09-14', '10:00:00', 'Revisión post-operatoria', 'CONFIRMADA', 'Online', 'Hospital General Madrid - Consulta 201', 'Paciente operado de rodilla.', 35);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(8, 5, '2025-09-15', '13:00:00', 'Problemas de memoria', 'PENDIENTE', 'Presencial', 'Hospital Universitario La Paz - Consulta 301', 'Posible diagnóstico neurológico.', 40);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(9, 7, '2025-09-16', '09:45:00', 'Seguimiento tratamiento oncológico', 'REALIZADA', 'Presencial', 'Hospital Clínico San Carlos - Consulta 401', 'Evolución favorable.', 60);
+
+INSERT INTO citas (paciente_id, medico_id, fecha, hora, motivo, estado, tipo_consulta, ubicacion, observaciones, duracion_minutos) VALUES
+(10, 9, '2025-09-17', '08:15:00', 'Revisión endocrina', 'PENDIENTE', 'Telefonica', 'Hospital Ramón y Cajal - Consulta 501', 'Paciente trae analítica de glucosa.', 25);
 
 
 

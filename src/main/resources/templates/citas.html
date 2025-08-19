@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Lista de Citas</title>
+	<!-- Estilos también usa thymeleaf -->
+	<link rel="stylesheet" th:href="@{/css/style_citas.css}">
+</head>
+
+<body>
+	<h1>Listado de Citas</h1>
+
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Nombre de Paciente</th>
+			<th>Nombre de Medico</th>
+			<th>Fecha</th>
+			<th>Hora</th>
+			<th>Motivo</th>
+			<th>Estado</th>
+			<th>Tipo de Consulta</th>
+			<th>Ubicación</th>
+			<th>Observaciones</th>
+			<th>Duración en (minutos)</th>
+			<!--<th>Creada En</th>
+			<th>Actualizado En</th> lo especifico -->
+		</tr>
+		<tr th:each="cita : ${citas}">
+			<td th:text="${cita.id}">1</td>
+			<td th:text="${cita.paciente.nombre}">Nombre del Paciente</td>
+			<td th:text="${cita.medico.nombre}">Nombre del Médico</td>
+			<td th:text="${cita.fecha}">Fecha</td>
+			<td th:text="${cita.hora}">Hora</td>
+			<td th:text="${cita.motivo}">Motivo</td> <!-- Este es el campo del objeto Paciente.java -->
+			<td th:text="${cita.estado}">Estado</td>
+
+			<td>
+				<span th:if="${cita.tipoConsulta == 'Online'}">💻</span>
+				<span th:if="${cita.tipoConsulta == 'Telefonica'}">📞</span>
+				<span th:if="${cita.tipoConsulta == 'Presencial'}">🏥</span>
+				<span th:text="${cita.tipoConsulta}"></span>
+			</td>
+			
+			<td th:text="${cita.ubicacion}">Ubicación</td>
+			<td th:text="${cita.observaciones}">Observaciones</td>
+			<td th:text="${cita.duracionMinutos}">Duración en Minutos</td>
+			<!--<td th:text="${cita.fechaCreacion}">Fecha de Creación</td>
+			<td th:text="${cita.ultimaActualizacion}">Última actualización</td>-->
+		</tr>
+	</table>
+</body>
+
+</html>

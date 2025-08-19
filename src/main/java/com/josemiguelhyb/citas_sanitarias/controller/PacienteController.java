@@ -20,6 +20,6 @@ public class PacienteController {
 	@GetMapping("/pacientes")
 	public String listarPacientes(Model model) {
 		model.addAttribute("pacientes", pacienteService.listarTodos());
-		return "pacientes"; // busca vista_pacientes.html en /templates		
+		return "pacientes"; // busca pacientes.html en /templates		
 	}
 }
