@@ -34,7 +34,10 @@
 			<td th:text="${cita.fecha}">Fecha</td>
 			<td th:text="${cita.hora}">Hora</td>
 			<td th:text="${cita.motivo}">Motivo</td> <!-- Este es el campo del objeto Paciente.java -->
+			
+			
 			<td th:text="${cita.estado}">Estado</td>
+			
 
 			<td>
 				<span th:if="${cita.tipoConsulta == 'Online'}">💻</span>
