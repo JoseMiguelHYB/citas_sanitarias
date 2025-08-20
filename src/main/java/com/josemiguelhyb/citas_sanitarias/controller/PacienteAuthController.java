@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.josemiguelhyb.citas_sanitarias.model.Paciente;
 import com.josemiguelhyb.citas_sanitarias.service.PacienteService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/paciente")
@@ -64,4 +68,62 @@ public class PacienteAuthController {
 			return "paciente_registro"; // vuelve al formulario mostrando toast
 		}
 	}
+	
+	// --------------------- Login ---------------------
+
+	@GetMapping("/login")
+	public String mostrarLogin(Model model) {
+		model.addAttribute("paciente", new Paciente());
+		return "paciente_login";
+	}	
+	
+	@PostMapping("/login")
+	public String loginPaciente(@RequestParam String dni,
+	                            @RequestParam String password,
+	                            HttpSession session,
+	                            RedirectAttributes redirectAttrs) {
+
+	    Paciente paciente = pacienteService.buscarPorDni(dni);
+
+	    if (paciente == null) {
+	        redirectAttrs.addFlashAttribute("error", "El DNI no está registrado ❌");
+	        return "redirect:/paciente/login";
+	    }
+
+	    if (!paciente.getPassword().equals(password)) {
+	        redirectAttrs.addFlashAttribute("error", "La contraseña es incorrecta 🔑");
+	        return "redirect:/paciente/login";
+	    }
+
+	    // Si llega aquí, login correcto
+	    session.setAttribute("pacienteLogueado", paciente);
+	    return "redirect:/paciente/paciente_home";
+	}
+	
+	
+	// --------------------- Home ---------------------
+
+	@GetMapping("/paciente_home")
+	public String mostrarHome(HttpSession session, Model model) {
+	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
+
+	    if (paciente == null) {
+	        return "redirect:/paciente/login"; // si no hay sesión, vuelve a login
+	    }
+
+	    model.addAttribute("paciente", paciente);
+	    return "paciente_home";
+	}	
+	
+	
+	// --------------------- Logout ---------------------
+
+	
+	@PostMapping("/logout")
+	public String logout(HttpSession session) {
+	    session.invalidate(); // Invalida toda la sesión
+	    return "redirect:/";  // Vuelve al inicio
+	}
+	
+
 }

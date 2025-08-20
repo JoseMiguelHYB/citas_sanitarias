@@ -26,4 +26,9 @@ public class PacienteService {
 		}
 		return pacienteRepository.save(paciente);
 	}
+	
+	// Método para Login / búsqueda por DNI
+	public Paciente buscarPorDni(String dni) {
+		return pacienteRepository.findByDni(dni).orElse(null);		
+	}	
 }
