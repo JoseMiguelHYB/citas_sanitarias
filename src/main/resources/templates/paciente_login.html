@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Paciente - Citas Sanitarias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f6f6f6;
+            color: #000;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html.dark-mode, html.dark-mode body {
+            background-color: #121212;
+            color: #eee;
+        }
+
+        .container-login {
+            max-width: 480px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 5rem auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        html.dark-mode .container-login {
+            background-color: #1e1e1e;
+            border-color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-main {
+            background-color: #00a99d;
+            color: #fff;
+            border: none;
+            width: 100%;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.9rem;
+            border-radius: 0.5rem;
+        }
+
+        .btn-main:hover {
+            background-color: #006d67;
+        }
+
+        .dark-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .form-check-input {
+            width: 3rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        a {
+            color: #008e86;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        html.dark-mode a {
+            color: #4dd0cd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Switch Modo Oscuro -->
+    <div class="dark-toggle">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="darkSwitch">
+            <label class="form-check-label" for="darkSwitch">🌙</label>
+        </div>
+    </div>
+
+    <!-- Toast de éxito -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div th:if="${successMessage}" 
+             class="toast align-items-center text-bg-success border-0" 
+             role="alert" 
+             aria-live="assertive" 
+             aria-atomic="true" 
+             data-bs-delay="5000" 
+             id="successToast">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <span th:text="${successMessage}"></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de error -->
+    <div th:if="${error}" 
+         class="toast align-items-center text-bg-danger border-0" 
+         role="alert" 
+         aria-live="assertive" 
+         aria-atomic="true" 
+         data-bs-delay="5000" 
+         id="errorToast">
+        <div class="d-flex">
+            <div class="toast-body">
+                <span th:text="${error}"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="container-login">
+        <h2>Acceso Paciente</h2>
+
+		<form th:action="@{/pacientes/login}" th:object="${paciente}" method="post">
+            <div class="mb-3">
+                <label for="username">User Name</label>
+                <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-main">Iniciar Sesión</button>
+
+            <div class="text-center mt-3">
+                <p>¿No estás registrado? 
+					<a th:href="@{/pacientes/register}" class="fw-semibold">Crear cuenta</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successToastEl = document.getElementById('successToast');
+            if (successToastEl) {
+                const toast = new bootstrap.Toast(successToastEl);
+                toast.show();
+            }
+
+            const errorToastEl = document.getElementById('errorToast');
+            if (errorToastEl) {
+                const toast = new bootstrap.Toast(errorToastEl);
+                toast.show();
+            }
+
+            // Dark mode toggle logic
+            const switchInput = document.getElementById('darkSwitch');
+            const html = document.documentElement;
+
+            if (localStorage.getItem('theme') === 'dark') {
+                html.classList.add('dark-mode');
+                switchInput.checked = true;
+            }
+
+            switchInput.addEventListener('change', () => {
+                html.classList.toggle('dark-mode');
+                localStorage.setItem('theme', html.classList.contains('dark-mode') ? 'dark' : 'light');
+            });
+        });
+    </script>
+</body>
+</html>

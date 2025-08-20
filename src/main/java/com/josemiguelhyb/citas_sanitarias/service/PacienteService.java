@@ -10,16 +10,20 @@ import com.josemiguelhyb.citas_sanitarias.repository.PacienteRepository;
 @Service
 public class PacienteService {
 	private final PacienteRepository pacienteRepository;
-		
+
 	public PacienteService(PacienteRepository pacienteRepository) {
 		this.pacienteRepository = pacienteRepository;
 	}
-	
+
 	public List<Paciente> listarTodos() {
 		return pacienteRepository.findAll();
 	}
-	
+
 	public Paciente guardar(Paciente paciente) {
-		return pacienteRepository.save(paciente);		
-	}	
+		// Verificar si ya existe un paciente con ese DNI
+		if (pacienteRepository.findByDni(paciente.getDni()).isPresent()) {
+			throw new IllegalArgumentException("El DNI ya está registrado");
+		}
+		return pacienteRepository.save(paciente);
+	}
 }
