@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Registro - Citas Sanitarias</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+	<link rel="stylesheet" th:href="@{/css/style_paciente_registro.css}">
+</head>
+
+<body>
+	<div class="header-banner">
+		<strong>Gestión Sanitaria Centralizada</strong> – Accede a tus citas desde cualquier lugar, en segundos.
+	</div>
+
+	<!-- Modo oscuro -->
+	<div class="dark-toggle">
+		<div class="form-check form-switch">
+			<input class="form-check-input" type="checkbox" id="darkSwitch">
+			<label class="form-check-label" for="darkSwitch">🌙</label>
+		</div>
+	</div>
+
+	<!-- Toast de error -->
+	<div class="toast-container position-fixed top-0 end-0 p-3">
+		<div th:if="${errorMessage}" class="toast align-items-center text-bg-danger border-0" role="alert"
+			aria-live="assertive" aria-atomic="true" data-bs-delay="5000" id="errorToast">
+			<div class="d-flex">
+				<div class="toast-body">
+					<span th:text="${errorMessage}"></span>
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+					aria-label="Cerrar"></button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container-login">
+
+		<!-- Flecha de regreso -->
+		<a th:href="@{ / }" class="btn-back" title="Volver al atrás">
+			<i class="bi bi-arrow-left"></i> Atrás
+		</a>
+
+		<h2>Registro de Paciente</h2>
+
+		<form th:action="@{/pacientes/register}" th:object="${paciente}" method="post">
+			<div class="row g-3">
+
+				<!-- Nombres -->
+				<div class="col-md-6">
+					<label for="nombre" class="form-label">Nombres</label>
+					<input type="text" th:field="*{nombre}" id="nombre" class="form-control" required>
+				</div>
+
+				<!-- Apellidos -->
+				<div class="col-md-6">
+					<label for="apellido" class="form-label">Apellidos</label>
+					<input type="text" th:field="*{apellido}" id="apellido" class="form-control" required>
+				</div>
+
+				<!-- DNI -->
+				<div class="col-md-6">
+					<label for="dni" class="form-label">DNI</label>
+					<input type="text" th:field="*{dni}" id="dni" class="form-control" required>
+				</div>
+
+				<!-- Contraseña -->
+				<div class="col-md-6">
+					<label for="password" class="form-label">Contraseña</label>
+					<input type="password" th:field="*{password}" id="password" class="form-control" required>
+				</div>
+
+				<!-- Fecha de nacimiento -->
+				<div class="col-md-6">
+					<label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+					<input type="date" th:field="*{fechaNacimiento}" id="fechaNacimiento" class="form-control">
+				</div>
+
+				<!-- Email -->
+				<div class="col-md-6">
+					<label for="email" class="form-label">Email</label>
+					<input type="email" th:field="*{email}" id="email" class="form-control">
+				</div>
+
+				<!-- Teléfono -->
+				<div class="col-md-6">
+					<label for="telefono" class="form-label">Teléfono</label>
+					<input type="text" th:field="*{telefono}" id="telefono" class="form-control">
+				</div>
+
+				<!-- Género -->
+				<div class="col-md-6">
+					<label for="genero" class="form-label">Género</label>
+					<select th:field="*{genero}" id="genero" class="form-select">
+						<option value="">Selecciona...</option>
+						<option value="Masculino">Masculino</option>
+						<option value="Femenino">Femenino</option>
+						<option value="Otro">Otro</option>
+					</select>
+				</div>
+
+				<!-- Dirección -->
+				<div class="col-md-6">
+					<label for="direccion" class="form-label">Dirección</label>
+					<input type="text" th:field="*{direccion}" id="direccion" class="form-control">
+				</div>
+
+				<!-- Localidad -->
+				<div class="col-md-6">
+					<label for="localidad" class="form-label">Localidad</label>
+					<input type="text" th:field="*{localidad}" id="localidad" class="form-control">
+				</div>
+
+				<!-- Código postal -->
+				<div class="col-md-6">
+					<label for="codigoPostal" class="form-label">Código postal</label>
+					<input type="text" th:field="*{codigoPostal}" id="codigoPostal" class="form-control">
+				</div>
+
+				<!-- Número de seguridad social -->
+				<div class="col-md-6">
+					<label for="numeroSeguridadSocial" class="form-label">Número de seguridad social</label>
+					<input type="text" th:field="*{numeroSeguridadSocial}" id="numeroSeguridadSocial"
+						class="form-control">
+				</div>
+
+				<!-- Grupo sanguíneo -->
+				<div class="col-md-6">
+					<label for="grupoSanguineo" class="form-label">Grupo sanguíneo</label>
+					<input type="text" th:field="*{grupoSanguineo}" id="grupoSanguineo" class="form-control">
+				</div>
+
+				<!-- Alergias -->
+				<div class="col-md-6">
+					<label for="alergias" class="form-label">Alergias</label>
+					<input type="text" th:field="*{alergias}" id="alergias" class="form-control">
+				</div>
+
+				<!-- Contacto de emergencia -->
+				<div class="col-md-6">
+					<label for="contactoEmergencia" class="form-label">Contacto de emergencia</label>
+					<input type="text" th:field="*{contactoEmergencia}" id="contactoEmergencia" class="form-control">
+				</div>
+
+				<!-- Seguro médico / mutua -->
+				<div class="col-md-6">
+					<label for="seguroMedicoMutua" class="form-label">Seguro médico / Mutua</label>
+					<input type="text" th:field="*{seguroMedicoMutua}" id="seguroMedicoMutua" class="form-control">
+				</div>
+
+				<!-- Botón de registro -->
+				<div class="col-12 text-center mt-3">
+					<button type="submit" class="btn btn-primary">Registrarse</button>
+				</div>
+
+			</div>
+		</form>
+
+
+		<div class="text-center mt-2">
+			<p>¿Ya tienes una cuenta?
+				<a th:href="@{/pacientes/login}" class="fw-semibold link-register">Inicia sesión</a>
+			</p>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const errorToastEl = document.getElementById('errorToast');
+			if (errorToastEl) {
+				const errorToast = new bootstrap.Toast(errorToastEl);
+				errorToast.show();
+			}
+
+			const darkSwitch = document.getElementById('darkSwitch');
+			const html = document.documentElement;
+
+			darkSwitch.addEventListener('change', () => {
+				if (darkSwitch.checked) {
+					html.classList.add('dark-mode');
+					localStorage.setItem('theme', 'dark');
+				} else {
+					html.classList.remove('dark-mode');
+					localStorage.setItem('theme', 'light');
+				}
+			});
+
+			if (localStorage.getItem('theme') === 'dark') {
+				darkSwitch.checked = true;
+				html.classList.add('dark-mode');
+			}
+		});
+	</script>
+</body>
+
+</html>
