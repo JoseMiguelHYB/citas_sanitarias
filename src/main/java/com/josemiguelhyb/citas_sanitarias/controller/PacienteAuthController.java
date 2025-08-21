@@ -1,3 +1,6 @@
+// Se encarga de login, register, home, logout todo relacionado con la identididad del 
+// paciente y la sesión
+
 package com.josemiguelhyb.citas_sanitarias.controller;
 
 import org.slf4j.Logger;
@@ -28,8 +31,10 @@ public class PacienteAuthController {
 		this.pacienteService = pacienteService;
 	}
 
+	// --------------------- Register ---------------------
+
 	@GetMapping("/register")
-	public String mostrarFormularioRegistro(Model model) {
+	public String mostrarRegistro(Model model) {
 		model.addAttribute("paciente", new Paciente());
 		log.info("Se muestra formulario de registro con paciente vacío");
 		return "paciente_registro";
@@ -60,12 +65,12 @@ public class PacienteAuthController {
 			pacienteService.guardar(paciente);
 			log.info("Paciente guardado correctamente en la base de datos ✅");
 			model.addAttribute("successMessage", "Paciente registrado correctamente");
-			return "paciente_login"; // redirigir a login tras registro exitoso
+			return "redirect:/paciente/login"; // redirigir a este endpoint
 
 		} catch (IllegalArgumentException ex) {
 			log.warn("Paciente con DNI {} ya está registrado ❌", paciente.getDni());
 			model.addAttribute("errorMessage", ex.getMessage()); // "El DNI ya está registrado"
-			return "paciente_registro"; // vuelve al formulario mostrando toast
+			return "redirect:/paciente/registro"; // redirige a este endpoint
 		}
 	}
 	
@@ -102,9 +107,10 @@ public class PacienteAuthController {
 	
 	
 	// --------------------- Home ---------------------
-
+	
+	// Aquí estoy usando HttpSession para loguear al paciente en ese momento
 	@GetMapping("/paciente_home")
-	public String mostrarHome(HttpSession session, Model model) {
+	public String mostrarDashboard(HttpSession session, Model model) {
 	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
 
 	    if (paciente == null) {
@@ -113,16 +119,14 @@ public class PacienteAuthController {
 
 	    model.addAttribute("paciente", paciente);
 	    return "paciente_home";
-	}	
-	
+	}		
 	
 	// --------------------- Logout ---------------------
-
 	
 	@PostMapping("/logout")
 	public String logout(HttpSession session) {
 	    session.invalidate(); // Invalida toda la sesión
-	    return "redirect:/";  // Vuelve al inicio
+	    return "redirect:/paciente/login";  // Vuelve al inicio
 	}
 	
 
