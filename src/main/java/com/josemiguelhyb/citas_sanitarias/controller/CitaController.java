@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.josemiguelhyb.citas_sanitarias.service.CitaService;
 
 @Controller
-@RequestMapping("/vista")
+@RequestMapping("/citas")
 public class CitaController {
 	
 	private final CitaService citaService;
@@ -17,7 +17,8 @@ public class CitaController {
 		this.citaService = citaService;
 	}
 	
-	@GetMapping("/citas")
+	// Listar
+	@GetMapping
 	public String listarCitas(Model model) {
 		model.addAttribute("citas", citaService.listarTodos());
 		return "citas"; // busca citas.html en /templates		

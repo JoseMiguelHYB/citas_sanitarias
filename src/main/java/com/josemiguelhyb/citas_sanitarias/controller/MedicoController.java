@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.josemiguelhyb.citas_sanitarias.service.MedicoService;
 
 @Controller
-@RequestMapping("/vista")
+@RequestMapping("/medicos")
 public class MedicoController {
 	
 	private final MedicoService medicoService;
@@ -17,9 +17,10 @@ public class MedicoController {
 		this.medicoService = medicoService;
 	}
 	
-	@GetMapping("/medicos")
+	// Listar
+	@GetMapping
 	public String listarMedicos(Model model) {
 		model.addAttribute("medicos", medicoService.listarTodos());
-		return "medicos"; // busca vista_pacientes.html en /templates		
+		return "medicos"; // busca vista_medicos.html en /templates		
 	}
 }
