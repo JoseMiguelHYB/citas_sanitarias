@@ -1,7 +1,6 @@
 package com.josemiguelhyb.citas_sanitarias.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.Column;
@@ -31,28 +30,28 @@ public class Cita {
 	@JoinColumn(name = "medico_id", nullable = false) 
 	private Medico medico;
 	
-	@Column(nullable = false)
+	@Column(nullable = true) // Signfiica q esta columna no puede tomar valores nulos.
 	private LocalDate fecha;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private LocalTime hora;
 	
 	@Column(length = 200)
 	private String motivo; // opcional: descripción del motivo de la cita
 	
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Column(nullable = true, length = 20)
 	private EstadoCita estado; // PENDIENTE, CONFIRMADA, CANCELADA,...	
 	
 	@Column(name = "tipo_consulta")
 	private String TipoConsulta; // Presencial/telefónica/Online
 	
-	private String ubicacion; // Dirección donde se encuentra la cita	
+	//private String ubicacion; // Dirección donde se encuentra la cita	
 	
-	private String observaciones; // Importante porque indica que el paciente llego con los resultados necesarios
+	//private String observaciones; // Importante porque indica que el paciente llego con los resultados necesarios
 	
-	@Column(name = "duracion_minutos")
-	private Integer duracionMinutos;
+	//@Column(name = "duracion_minutos")
+	//private Integer duracionMinutos;
 	
 	/*@Column(name = "creada_en")
 	private LocalDateTime fechaCreacion;
@@ -62,10 +61,10 @@ public class Cita {
 
 	public Cita() { 
 	}
-	
+
 	public Cita(Long id, Paciente paciente, Medico medico, LocalDate fecha, LocalTime hora, String motivo,
-			EstadoCita estado, String tipoConsulta, String ubicacion, String observaciones, Integer duracionMinutos,
-			LocalDateTime fechaCreacion, LocalDateTime ultimaActualizacion) {
+			EstadoCita estado, String tipoConsulta) {
+		super();
 		this.id = id;
 		this.paciente = paciente;
 		this.medico = medico;
@@ -74,13 +73,8 @@ public class Cita {
 		this.motivo = motivo;
 		this.estado = estado;
 		TipoConsulta = tipoConsulta;
-		this.ubicacion = ubicacion;
-		this.observaciones = observaciones;
-		this.duracionMinutos = duracionMinutos;
-		//this.fechaCreacion = fechaCreacion;
-		//this.ultimaActualizacion = ultimaActualizacion;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -145,29 +139,7 @@ public class Cita {
 		TipoConsulta = tipoConsulta;
 	}
 
-	public String getUbicacion() {
-		return ubicacion;
-	}
 
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
-	public String getObservaciones() {
-		return observaciones;
-	}
-
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
-	}
-
-	public Integer getDuracionMinutos() {
-		return duracionMinutos;
-	}
-
-	public void setDuracionMinutos(Integer duracionMinutos) {
-		this.duracionMinutos = duracionMinutos;
-	}
 
 	
 
@@ -187,11 +159,11 @@ public class Cita {
 		this.ultimaActualizacion = ultimaActualizacion;
 	}*/
 
+
 	@Override
 	public String toString() {
 		return "Cita [id=" + id + ", paciente=" + paciente + ", medico=" + medico + ", fecha=" + fecha + ", hora="
-				+ hora + ", motivo=" + motivo + ", estado=" + estado + ", TipoConsulta=" + TipoConsulta + ", ubicacion="
-				+ ubicacion + ", observaciones=" + observaciones + ", duracionMinutos=" + duracionMinutos + "]";
+				+ hora + ", motivo=" + motivo + ", estado=" + estado + ", TipoConsulta=" + TipoConsulta + "]";
 	}
 
 }

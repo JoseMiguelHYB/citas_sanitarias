@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.josemiguelhyb.citas_sanitarias.model.Paciente;
+import com.josemiguelhyb.citas_sanitarias.service.MedicoService;
 import com.josemiguelhyb.citas_sanitarias.service.PacienteService;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,9 +27,11 @@ public class PacienteAuthController {
 	private static final Logger log = LoggerFactory.getLogger(PacienteAuthController.class);
 
 	private final PacienteService pacienteService;
+	private final MedicoService medicoService;
 
-	public PacienteAuthController(PacienteService pacienteService) {
+	public PacienteAuthController(PacienteService pacienteService, MedicoService medicoService) {
 		this.pacienteService = pacienteService;
+		this.medicoService = medicoService;
 	}
 
 	// --------------------- Register ---------------------
@@ -73,61 +76,67 @@ public class PacienteAuthController {
 			return "redirect:/paciente/registro"; // redirige a este endpoint
 		}
 	}
-	
+
 	// --------------------- Login ---------------------
 
 	@GetMapping("/login")
 	public String mostrarLogin(Model model) {
 		model.addAttribute("paciente", new Paciente());
 		return "paciente_login"; // esto es un paciente_login.html
-	}	
-	
-	@PostMapping("/login")
-	public String loginPaciente(@RequestParam String dni,
-	                            @RequestParam String password,
-	                            HttpSession session,
-	                            RedirectAttributes redirectAttrs) {
-
-	    Paciente paciente = pacienteService.buscarPorDni(dni);
-
-	    if (paciente == null) {
-	        redirectAttrs.addFlashAttribute("error", "El DNI no está registrado ❌");
-	        return "redirect:/paciente/login";
-	    }
-
-	    if (!paciente.getPassword().equals(password)) {
-	        redirectAttrs.addFlashAttribute("error", "La contraseña es incorrecta 🔑");
-	        return "redirect:/paciente/login";
-	    }
-
-	    // Si llega aquí, login correcto
-	    session.setAttribute("pacienteLogueado", paciente);
-	    return "redirect:/paciente/paciente_home";
 	}
-	
-	
+
+	@PostMapping("/login")
+	public String loginPaciente(@RequestParam String dni, @RequestParam String password, HttpSession session,
+			RedirectAttributes redirectAttrs) {
+
+		Paciente paciente = pacienteService.buscarPorDni(dni);
+
+		if (paciente == null) {
+			redirectAttrs.addFlashAttribute("error", "El DNI no está registrado ❌");
+			return "redirect:/paciente/login";
+		}
+
+		if (!paciente.getPassword().equals(password)) {
+			redirectAttrs.addFlashAttribute("error", "La contraseña es incorrecta 🔑");
+			return "redirect:/paciente/login";
+		}
+
+		// Si llega aquí, login correcto, guardamos en sessión
+		session.setAttribute("pacienteLogueado", paciente);
+		
+		return "redirect:/paciente/paciente_home";
+	}
+
 	// --------------------- Home ---------------------
-	
+
 	// Aquí estoy usando HttpSession para loguear al paciente en ese momento
 	@GetMapping("/paciente_home")
 	public String mostrarDashboard(HttpSession session, Model model) {
 	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
 
 	    if (paciente == null) {
-	        return "redirect:/paciente/login"; // si no hay sesión, vuelve a login
+	        return "redirect:/paciente/login";
 	    }
 
+	    // Datos del paciente para saludo
 	    model.addAttribute("paciente", paciente);
+
+	    // Especialidades desde la BD (no hardcodeadas)
+	    model.addAttribute("especialidades", medicoService.listarEspecialidades());
+
+	    // Lista de médicos completa
+	    model.addAttribute("medicos", medicoService.listarTodos());
+
 	    return "paciente_home";
-	}		
-	
+	}
+
+
 	// --------------------- Logout ---------------------
-	
+
 	@PostMapping("/logout")
 	public String logout(HttpSession session) {
-	    session.invalidate(); // Invalida toda la sesión
-	    return "redirect:/paciente/login";  // Vuelve al inicio
+		session.invalidate(); // Invalida toda la sesión
+		return "redirect:/paciente/login"; // Vuelve al inicio
 	}
-	
 
 }

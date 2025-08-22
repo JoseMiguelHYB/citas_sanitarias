@@ -1,6 +1,7 @@
 package com.josemiguelhyb.citas_sanitarias.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,8 @@ public class MedicoService {
 
     // Buscar por id (para editar)
     public Medico buscarPorId(Long id) {
-        return medicoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado con id: " + id));
+        return medicoRepository.findById(id).orElse(null);
+
     }
 
     // Eliminar por id
@@ -49,4 +50,14 @@ public class MedicoService {
     public Medico buscarPorColegiado(String numeroColegiado) {
         return medicoRepository.findByNumeroColegiado(numeroColegiado).orElse(null);
     }
+    
+    
+ // Nuevo método: obtener lista de especialidades únicas
+    public List<String> listarEspecialidades() {
+        return medicoRepository.findAll()
+                               .stream()
+                               .map(Medico::getEspecialidad)
+                               .distinct()
+                               .collect(Collectors.toList());
+    }    
 }

@@ -9,5 +9,6 @@ import com.josemiguelhyb.citas_sanitarias.model.Medico;
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 	// Métodos adicionales si los necesitamos (findByDni, etc...)
     Optional<Medico> findByNumeroColegiado(String numeroColegiado);
+    
 	
 }
