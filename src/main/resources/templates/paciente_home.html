@@ -2,100 +2,279 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Panel Paciente</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Panel Paciente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-	<!-- CSS Paciente -->
-	<style>
-		body {
-			background-color: #f2fdfc; /* fondo suave */
-		}
-
-		.main-card {
-			background: #fff;
-			border-radius: 12px;
-			padding: 2rem;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-			border-top: 6px solid #009688; /* Verde azulado */
-		}
-
-		.bienvenida h1 {
-			color: #009688;
-			font-weight: bold;
-		}
-
-		.list-group a:hover {
-			background-color: #b2dfdb; /* hover verdoso */
-			color: #004d40;
-		}
-
-		footer {
-			margin-top: 3rem;
-			text-align: center;
-			color: #777;
-			font-size: 0.9rem;
-		}
-	</style>
+  <style>
+    body { background-color: #f2fdfc; }
+    .main-card { background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,.1); border-top: 6px solid #009688; }
+    .bienvenida h1 { color: #009688; font-weight: bold; }
+    .list-group a:hover { background-color: #b2dfdb; color: #004d40; }
+    .menu-card { max-width: 960px; margin-inline: auto; }
+    .content-card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 4px 10px rgba(0,0,0,.06); border: 1px solid #e8f3f2; }
+    .content-header { color:#00695c; font-weight: 700; }
+    .muted { color:#6b7c7a; }
+    .empty { border:2px dashed #cfe9e7; border-radius: 12px; padding: 1.25rem; text-align: center; color:#5e6b6a; }
+  </style>
 </head>
 
 <body>
-	<div class="container my-5">
-		<div class="main-card">
+  <div class="container my-5 menu-card">
+    <div class="main-card">
+      <!-- Bienvenida -->
+      <div class="text-center bienvenida mb-4">
+        <h1>🙎‍♂️ ¡Hola, <span th:text="${paciente.nombre}">Carlos</span>!</h1>
+        <p>Bienvenido a tu panel personal. Desde aquí puedes gestionar fácilmente tus citas médicas.</p>
+      </div>
 
-			<!-- Bienvenida -->
-			<div class="text-center bienvenida mb-4">
-				<h1>🙎‍♂️ ¡Hola, <span th:text="${paciente.nombre}">[Nombre]</span>!</h1>
-				<p>Bienvenido a tu panel personal. Desde aquí puedes gestionar fácilmente tus citas médicas.</p>
-			</div>
+      <!-- Menú estilo lista (SPA) -->
+      <div id="spaMenu" class="list-group mb-4">
+        <!-- Mantén data-server con tus rutas reales para futuro fallback -->
+        <a href="#crear" data-server="/citas/nueva" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">➕</span>
+          <div>
+            <h5 class="mb-1">Crear Cita</h5>
+            <small>Programa una nueva consulta médica.</small>
+          </div>
+        </a>
 
-			<!-- Menú estilo lista -->
-			<div class="list-group mb-4">
-				<a th:href="@{/citas/nueva}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">➕</span>
-					<div>
-						<h5 class="mb-1">Crear Cita</h5>
-						<small>Programa una nueva consulta médica.</small>
-					</div>
-				</a>
+        <a href="#mis-citas" data-server="/citas/listado" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">📋</span>
+          <div>
+            <h5 class="mb-1">Ver Mis Citas</h5>
+            <small>Consulta todas tus citas agendadas.</small>
+          </div>
+        </a>
 
-				<a th:href="@{/citas/listado}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">📋</span>
-					<div>
-						<h5 class="mb-1">Ver Mis Citas</h5>
-						<small>Consulta todas tus citas agendadas.</small>
-					</div>
-				</a>
+        <a href="#actualizar" data-server="/citas/modificar" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">✏️</span>
+          <div>
+            <h5 class="mb-1">Actualizar Cita</h5>
+            <small>Edita la información de una cita existente.</small>
+          </div>
+        </a>
 
-				<a th:href="@{/citas/modificar}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">✏️</span>
-					<div>
-						<h5 class="mb-1">Actualizar Cita</h5>
-						<small>Edita la información de una cita existente.</small>
-					</div>
-				</a>
+        <a href="#eliminar" data-server="/citas/eliminar" class="list-group-item list-group-item-action d-flex align-items-center text-danger">
+          <span class="fs-3 me-3">🗑️</span>
+          <div>
+            <h5 class="mb-1">Eliminar Cita</h5>
+            <small>Cancela una cita que ya no necesites.</small>
+          </div>
+        </a>
+      </div>
 
-				<a th:href="@{/citas/eliminar}" class="list-group-item list-group-item-action d-flex align-items-center text-danger">
-					<span class="fs-3 me-3">🗑️</span>
-					<div>
-						<h5 class="mb-1">Eliminar Cita</h5>
-						<small>Cancela una cita que ya no necesites.</small>
-					</div>
-				</a>
-			</div>
-		</div>
+      <!-- Contenedor de contenido dinámico -->
+      <div class="content-card">
+        <!-- CREAR CITA -->
+        <section id="view-crear" class="spa-view" aria-labelledby="title-crear">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 id="title-crear" class="content-header m-0">Crear nueva cita</h3>
+            <span class="badge text-bg-success">Paso 1</span>
+          </div>
 
-		<!-- Logout -->
-		<div class="text-center mt-5">
-			<form th:action="@{/paciente/logout}" method="post">
-				<button class="btn btn-outline-success btn-lg">🚪 Cerrar sesión</button>
-			</form>
-		</div>
-	</div>
+          <form class="row g-3" method="post" th:action="@{/citas}">
+            <!-- Relleno ficticio -->
+            <div class="col-md-6">
+              <label class="form-label">Especialidad</label>
+              <select class="form-select" name="especialidad">
+                <option selected>Medicina General</option>
+                <option>Pediatría</option>
+                <option>Cardiología</option>
+                <option>Dermatología</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Médico</label>
+              <select class="form-select" name="medico">
+                <option selected>Dr. Ficticio López</option>
+                <option>Dra. Inventada Pérez</option>
+                <option>Dr. Demo Ramírez</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" name="fecha" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Hora</label>
+              <input type="time" class="form-control" name="hora" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Modalidad</label>
+              <select class="form-select" name="modalidad">
+                <option selected>Presencial</option>
+                <option>Videoconsulta</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Motivo</label>
+              <textarea class="form-control" rows="3" placeholder="Cuéntanos brevemente... (texto ficticio)"></textarea>
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-success">Guardar cita</button>
+              <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+            </div>
+            <div class="col-12">
+              <p class="muted mt-2">* Esta es una maqueta con datos ficticios. Sustituye los campos por los de tu modelo.</p>
+            </div>
+          </form>
+        </section>
 
-	<footer>
-		© 2025 - Sistema de Gestión de Citas Sanitarias · Tu salud, siempre a un clic
-	</footer>
+        <!-- MIS CITAS -->
+        <section id="view-mis-citas" class="spa-view d-none" aria-labelledby="title-mis-citas">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 id="title-mis-citas" class="content-header m-0">Mis citas</h3>
+            <input type="search" class="form-control w-auto" placeholder="Buscar..." />
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Especialidad</th>
+                  <th>Médico</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2025-09-10</td>
+                  <td>10:30</td>
+                  <td>Cardiología</td>
+                  <td>Dr. Demo Ramírez</td>
+                  <td><span class="badge text-bg-primary">Programada</span></td>
+                </tr>
+                <tr>
+                  <td>2025-08-28</td>
+                  <td>16:00</td>
+                  <td>Dermatología</td>
+                  <td>Dra. Inventada Pérez</td>
+                  <td><span class="badge text-bg-secondary">Completada</span></td>
+                </tr>
+                <tr>
+                  <td>2025-08-12</td>
+                  <td>09:00</td>
+                  <td>Medicina General</td>
+                  <td>Dr. Ficticio López</td>
+                  <td><span class="badge text-bg-warning">Reprogramar</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="empty mt-3">Aquí aparecerán tus citas reales cuando conectes el backend.</div>
+        </section>
+
+        <!-- ACTUALIZAR CITA -->
+        <section id="view-actualizar" class="spa-view d-none" aria-labelledby="title-actualizar">
+          <h3 id="title-actualizar" class="content-header mb-3">Actualizar una cita</h3>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">ID de la cita</label>
+              <input class="form-control" placeholder="Ej: 123" />
+            </div>
+            <div class="col-md-8 d-flex align-items-end">
+              <button class="btn btn-outline-primary me-2">Buscar</button>
+              <span class="muted">(Relleno demo: aquí cargarías la cita seleccionada)</span>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Nueva fecha</label>
+              <input type="date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Nueva hora</label>
+              <input type="time" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Estado</label>
+              <select class="form-select">
+                <option>Programada</option>
+                <option>Reprogramada</option>
+                <option>Cancelada</option>
+              </select>
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-warning">Guardar cambios</button>
+              <button class="btn btn-outline-secondary">Cancelar</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ELIMINAR CITA -->
+        <section id="view-eliminar" class="spa-view d-none" aria-labelledby="title-eliminar">
+          <h3 id="title-eliminar" class="content-header mb-3 text-danger">Eliminar una cita</h3>
+          <p class="muted">Selecciona la cita que deseas cancelar. (Contenido ficticio para previsualización)</p>
+
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              2025-09-10 · 10:30 · Cardiología · Dr. Demo Ramírez
+              <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              2025-08-28 · 16:00 · Dermatología · Dra. Inventada Pérez
+              <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </li>
+          </ul>
+          <div class="alert alert-warning" role="alert">
+            Esta acción es permanente. En producción, solicita confirmación antes de borrar.
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="text-center mt-5">
+      <form th:action="@{/paciente/logout}" method="post">
+        <button class="btn btn-outline-success btn-lg">🚪 Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted mb-4">© 2025 - Sistema de Gestión de Citas Sanitarias · Tu salud, siempre a un clic</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // --- Router mínimo basado en hash ---
+    const routes = {
+      '#crear': 'view-crear',
+      '#mis-citas': 'view-mis-citas',
+      '#actualizar': 'view-actualizar',
+      '#eliminar': 'view-eliminar'
+    };
+
+    function showView(hash) {
+      const target = routes[hash] || 'view-crear';
+      document.querySelectorAll('.spa-view').forEach(v => v.classList.add('d-none'));
+      document.getElementById(target).classList.remove('d-none');
+
+      // Marcar activo en el menú
+      document.querySelectorAll('#spaMenu a').forEach(a => a.classList.remove('active'));
+      const activeLink = document.querySelector(`#spaMenu a[href='${hash}']`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+
+    // Interceptar clicks para evitar navegación de página completa
+    document.getElementById('spaMenu').addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const hash = link.getAttribute('href');
+      if (hash && hash.startsWith('#')) { // SPA
+        e.preventDefault();
+        history.pushState(null, '', hash);
+        showView(hash);
+      }
+    });
+
+    // Cargar la vista correcta al entrar o al cambiar hash
+    window.addEventListener('hashchange', () => showView(location.hash));
+    window.addEventListener('DOMContentLoaded', () => showView(location.hash || '#crear'));
+  </script>
 </body>
 </html>

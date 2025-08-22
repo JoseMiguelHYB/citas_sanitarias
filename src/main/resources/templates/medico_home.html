@@ -2,100 +2,308 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Panel Médico</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Panel Médico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-	<!-- CSS Médico -->
-	<style>
-		body {
-			background-color: #f3f8fd; /* fondo suave azulado */
-		}
-
-		.main-card {
-			background: #fff;
-			border-radius: 12px;
-			padding: 2rem;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-			border-top: 6px solid #005a9c; /* Azul médico */
-		}
-
-		.bienvenida h1 {
-			color: #005a9c;
-			font-weight: bold;
-		}
-
-		.list-group a:hover {
-			background-color: #cfe4f7; /* hover azulado */
-			color: #003d73;
-		}
-
-		footer {
-			margin-top: 3rem;
-			text-align: center;
-			color: #777;
-			font-size: 0.9rem;
-		}
-	</style>
+  <style>
+    body { background-color: #f3f8fd; }
+    .main-card { background:#fff; border-radius:12px; padding:2rem; box-shadow:0 4px 10px rgba(0,0,0,.1); border-top:6px solid #005a9c; }
+    .bienvenida h1 { color:#005a9c; font-weight: bold; }
+    .list-group a:hover { background-color:#cfe4f7; color:#003d73; }
+    .menu-card { max-width: 1100px; margin-inline: auto; }
+    .content-card { background:#fff; border-radius:12px; padding:1.25rem; box-shadow:0 4px 10px rgba(0,0,0,.06); border:1px solid #e6eef9; }
+    .content-header { color:#0a4f86; font-weight:700; }
+    .muted { color:#6c7a89; }
+    .empty { border:2px dashed #d7e7fb; border-radius:12px; padding:1rem; text-align:center; color:#5d6d7e; }
+    .slot { display:inline-block; margin:.25rem; padding:.35rem .6rem; border:1px solid #cbe0f9; border-radius:999px; cursor:pointer; user-select:none; }
+    .slot.active { background:#0d6efd; color:#fff; border-color:#0d6efd; }
+  </style>
 </head>
 
 <body>
-	<div class="container my-5">
-		<div class="main-card">
+  <div class="container my-5 menu-card">
+    <div class="main-card">
+      <!-- Bienvenida -->
+      <div class="text-center bienvenida mb-4">
+        <h1>🩺 ¡Hola Dr./Dra. <span th:text="${medico.nombre}">Estrada</span>!</h1>
+        <p>Bienvenido a tu panel profesional. Desde aquí puedes gestionar tus citas y pacientes.</p>
+      </div>
 
-			<!-- Bienvenida -->
-			<div class="text-center bienvenida mb-4">
-				<h1>🩺 ¡Hola Dr./Dra. <span th:text="${medico.nombre}">[Nombre]</span>!</h1>
-				<p>Bienvenido a tu panel profesional. Desde aquí puedes gestionar tus citas y pacientes.</p>
-			</div>
+      <!-- Menú estilo lista (SPA) -->
+      <div id="spaMenu" class="list-group mb-4">
+        <a href="#citas" data-server="/medico/citas" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">📅</span>
+          <div>
+            <h5 class="mb-1">Mis Citas</h5>
+            <small>Consulta todas las citas que tienes programadas.</small>
+          </div>
+        </a>
 
-			<!-- Menú estilo lista -->
-			<div class="list-group mb-4">
-				<a th:href="@{/medico/citas}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">📅</span>
-					<div>
-						<h5 class="mb-1">Mis Citas</h5>
-						<small>Consulta todas las citas que tienes programadas.</small>
-					</div>
-				</a>
+        <a href="#pacientes" data-server="/medico/pacientes" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">🙍‍♀️</span>
+          <div>
+            <h5 class="mb-1">Mis Pacientes</h5>
+            <small>Accede al historial y datos de tus pacientes.</small>
+          </div>
+        </a>
 
-				<a th:href="@{/medico/pacientes}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">🙍‍♀️</span>
-					<div>
-						<h5 class="mb-1">Mis Pacientes</h5>
-						<small>Accede al historial y datos de tus pacientes.</small>
-					</div>
-				</a>
+        <a href="#agenda" data-server="/medico/agenda" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">🗓️</span>
+          <div>
+            <h5 class="mb-1">Gestionar Agenda</h5>
+            <small>Configura tu disponibilidad para nuevas citas.</small>
+          </div>
+        </a>
 
-				<a th:href="@{/medico/agenda}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">🗓️</span>
-					<div>
-						<h5 class="mb-1">Gestionar Agenda</h5>
-						<small>Configura tu disponibilidad para nuevas citas.</small>
-					</div>
-				</a>
+        <a href="#reportes" data-server="/medico/reportes" class="list-group-item list-group-item-action d-flex align-items-center">
+          <span class="fs-3 me-3">📊</span>
+          <div>
+            <h5 class="mb-1">Reportes</h5>
+            <small>Genera informes sobre tu actividad médica.</small>
+          </div>
+        </a>
+      </div>
 
-				<a th:href="@{/medico/reportes}" class="list-group-item list-group-item-action d-flex align-items-center">
-					<span class="fs-3 me-3">📊</span>
-					<div>
-						<h5 class="mb-1">Reportes</h5>
-						<small>Genera informes sobre tu actividad médica.</small>
-					</div>
-				</a>
-			</div>
-		</div>
+      <!-- Contenedor de contenido dinámico -->
+      <div class="content-card">
+        <!-- MIS CITAS -->
+        <section id="view-citas" class="spa-view" aria-labelledby="title-citas">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 id="title-citas" class="content-header m-0">Citas del día</h3>
+            <div class="d-flex gap-2">
+              <input type="date" class="form-control" />
+              <input type="search" class="form-control" placeholder="Buscar paciente/nota" />
+            </div>
+          </div>
 
-		<!-- Logout -->
-		<div class="text-center mt-5">
-			<form th:action="@{/medico/logout}" method="post">
-				<button class="btn btn-outline-primary btn-lg">🚪 Cerrar sesión</button>
-			</form>
-		</div>
-	</div>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Paciente</th>
+                  <th>Motivo</th>
+                  <th>Estado</th>
+                  <th class="text-end">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>08:30</td>
+                  <td>Carlos Ficticio</td>
+                  <td>Control rutinario</td>
+                  <td><span class="badge text-bg-primary">Programada</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-success">Atender</button>
+                    <button class="btn btn-sm btn-outline-warning">Reprogramar</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>09:15</td>
+                  <td>María Demo</td>
+                  <td>Dermatología</td>
+                  <td><span class="badge text-bg-secondary">Completada</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-info">Ver ficha</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>10:00</td>
+                  <td>José Prueba</td>
+                  <td>Cardiología</td>
+                  <td><span class="badge text-bg-warning">Reprogramar</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="empty mt-3">Conecta aquí tu listado real de citas desde el backend.</div>
+        </section>
 
-	<footer>
-		© 2025 - Sistema de Gestión de Citas Sanitarias · Tu profesión, siempre conectada
-	</footer>
+        <!-- MIS PACIENTES -->
+        <section id="view-pacientes" class="spa-view d-none" aria-labelledby="title-pacientes">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 id="title-pacientes" class="content-header m-0">Pacientes</h3>
+            <input type="search" class="form-control w-auto" placeholder="Buscar por nombre o DNI" />
+          </div>
+
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+              <div>
+                <strong>Carlos Ficticio</strong><br />
+                <small class="muted">DNI: 12345678Z · 32 años · Alergia: Penicilina</small>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-info">Ver historial</button>
+                <button class="btn btn-sm btn-outline-primary">Nueva nota</button>
+              </div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+              <div>
+                <strong>María Demo</strong><br />
+                <small class="muted">DNI: 87654321X · 28 años · Sin alergias</small>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-info">Ver historial</button>
+                <button class="btn btn-sm btn-outline-primary">Nueva nota</button>
+              </div>
+            </a>
+          </div>
+
+          <div class="empty mt-3">Este listado es ficticio. Sustituye por <code>th:each</code> de tu repositorio de pacientes.</div>
+        </section>
+
+        <!-- GESTIONAR AGENDA -->
+        <section id="view-agenda" class="spa-view d-none" aria-labelledby="title-agenda">
+          <h3 id="title-agenda" class="content-header mb-3">Disponibilidad semanal</h3>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Semana</label>
+              <input type="week" class="form-control" />
+            </div>
+            <div class="col-md-8 d-flex align-items-end justify-content-end">
+              <button class="btn btn-primary">Guardar disponibilidad</button>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Cuadrícula simple de slots de ejemplo -->
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+              <thead class="table-light">
+                <tr>
+                  <th style="width: 10%">Hora</th>
+                  <th>Lunes</th>
+                  <th>Martes</th>
+                  <th>Miércoles</th>
+                  <th>Jueves</th>
+                  <th>Viernes</th>
+                </tr>
+              </thead>
+              <tbody id="slotsBody">
+                <!-- generado por JS: filas 08:00–12:00 cada 30m -->
+              </tbody>
+            </table>
+          </div>
+          <p class="muted">Haz clic en los slots para activarlos/desactivarlos (demo). En producción, persiste estos cambios.</p>
+        </section>
+
+        <!-- REPORTES -->
+        <section id="view-reportes" class="spa-view d-none" aria-labelledby="title-reportes">
+          <h3 id="title-reportes" class="content-header mb-3">Resumen de actividad</h3>
+
+          <div class="row g-3">
+            <div class="col-md-3">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h6 class="card-title">Citas este mes</h6>
+                  <p class="display-6">128</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h6 class="card-title">Pacientes únicos</h6>
+                  <p class="display-6">94</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h6 class="card-title">Cancelaciones</h6>
+                  <p class="display-6">7</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h6 class="card-title">Satisfacción</h6>
+                  <p class="display-6">4.6★</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <div class="empty">Aquí puedes renderizar gráficos reales más adelante (por ejemplo, con datos agregados del backend).</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="text-center mt-5">
+      <form th:action="@{/medico/logout}" method="post">
+        <button class="btn btn-outline-primary btn-lg">🚪 Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted mb-4">© 2025 - Sistema de Gestión de Citas Sanitarias · Tu profesión, siempre conectada</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // --- Router mínimo basado en hash ---
+    const routes = {
+      '#citas': 'view-citas',
+      '#pacientes': 'view-pacientes',
+      '#agenda': 'view-agenda',
+      '#reportes': 'view-reportes'
+    };
+
+    function showView(hash) {
+      const target = routes[hash] || 'view-citas';
+      document.querySelectorAll('.spa-view').forEach(v => v.classList.add('d-none'));
+      document.getElementById(target).classList.remove('d-none');
+      document.querySelectorAll('#spaMenu a').forEach(a => a.classList.remove('active'));
+      const activeLink = document.querySelector(`#spaMenu a[href='${hash}']`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+
+    document.getElementById('spaMenu').addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const hash = link.getAttribute('href');
+      if (hash && hash.startsWith('#')) {
+        e.preventDefault();
+        history.pushState(null, '', hash);
+        showView(hash);
+      }
+    });
+
+    window.addEventListener('hashchange', () => showView(location.hash));
+    window.addEventListener('DOMContentLoaded', () => {
+      showView(location.hash || '#citas');
+
+      // Generar cuadrícula de slots demo 08:00–12:00 cada 30 minutos
+      const tbody = document.getElementById('slotsBody');
+      const horas = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00'];
+      const dias = ['Lun','Mar','Mié','Jue','Vie'];
+      horas.forEach(h => {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.textContent = h; tr.appendChild(th);
+        for (let i=0;i<5;i++) {
+          const td = document.createElement('td');
+          const span = document.createElement('span');
+          span.className = 'slot';
+          span.textContent = 'Disponible';
+          span.addEventListener('click', () => span.classList.toggle('active'));
+          td.appendChild(span);
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      });
+    });
+  </script>
 </body>
 </html>
