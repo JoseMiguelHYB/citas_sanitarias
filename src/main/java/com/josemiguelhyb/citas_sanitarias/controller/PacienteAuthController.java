@@ -79,7 +79,7 @@ public class PacienteAuthController {
 	@GetMapping("/login")
 	public String mostrarLogin(Model model) {
 		model.addAttribute("paciente", new Paciente());
-		return "paciente_login";
+		return "paciente_login"; // esto es un paciente_login.html
 	}	
 	
 	@PostMapping("/login")

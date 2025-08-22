@@ -1,123 +1,101 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Panel Principal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f8fb;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+	<meta charset="UTF-8">
+	<title>Panel Paciente</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .container-custom {
-            max-width: 960px;
-            margin: auto;
-            padding-top: 3rem;
-            padding-bottom: 3rem;
-        }
+	<!-- CSS Paciente -->
+	<style>
+		body {
+			background-color: #f2fdfc; /* fondo suave */
+		}
 
-        .bienvenida h1 {
-            color: #0070c0;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
+		.main-card {
+			background: #fff;
+			border-radius: 12px;
+			padding: 2rem;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			border-top: 6px solid #009688; /* Verde azulado */
+		}
 
-        .bienvenida p {
-            font-size: 1.1rem;
-            color: #555;
-        }
+		.bienvenida h1 {
+			color: #009688;
+			font-weight: bold;
+		}
 
-        .acciones .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
+		.list-group a:hover {
+			background-color: #b2dfdb; /* hover verdoso */
+			color: #004d40;
+		}
 
-        .acciones .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        footer {
-            margin-top: auto;
-            background-color: #ffffff;
-            padding: 1rem 0;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #888;
-            border-top: 1px solid #ddd;
-        }
-    </style>
+		footer {
+			margin-top: 3rem;
+			text-align: center;
+			color: #777;
+			font-size: 0.9rem;
+		}
+	</style>
 </head>
+
 <body>
+	<div class="container my-5">
+		<div class="main-card">
 
-    <div class="container container-custom">
-        <div class="text-center bienvenida">
-            <h1>👋 <span >¡Hola,</span> <span th:text="${paciente.nombre}">[Nombre]</span>!</h1>
-            <p style="color: black;">Bienvenido a tu panel personal. Desde aquí puedes gestionar fácilmente tus citas médicas.</p>
-        </div>
+			<!-- Bienvenida -->
+			<div class="text-center bienvenida mb-4">
+				<h1>🙎‍♂️ ¡Hola, <span th:text="${paciente.nombre}">[Nombre]</span>!</h1>
+				<p>Bienvenido a tu panel personal. Desde aquí puedes gestionar fácilmente tus citas médicas.</p>
+			</div>
 
-        <div class="row row-cols-1 row-cols-md-2 g-4 acciones mb-4">
-            <div class="col">
-                <a th:href="@{/citas/nueva}" class="text-decoration-none">
-                    <div class="card text-white bg-success text-center p-4">
-                        <div class="card-body">
-                            <h5 class="card-title">➕ Crear Cita</h5>
-                            <p class="card-text">Programa una nueva consulta médica.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+			<!-- Menú estilo lista -->
+			<div class="list-group mb-4">
+				<a th:href="@{/citas/nueva}" class="list-group-item list-group-item-action d-flex align-items-center">
+					<span class="fs-3 me-3">➕</span>
+					<div>
+						<h5 class="mb-1">Crear Cita</h5>
+						<small>Programa una nueva consulta médica.</small>
+					</div>
+				</a>
 
-            <div class="col">
-                <a th:href="@{/citas/listado}" class="text-decoration-none">
-                    <div class="card text-white bg-info text-center p-4">
-                        <div class="card-body">
-                            <h5 class="card-title">📋 Ver Mis Citas</h5>
-                            <p class="card-text">Consulta todas tus citas agendadas.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+				<a th:href="@{/citas/listado}" class="list-group-item list-group-item-action d-flex align-items-center">
+					<span class="fs-3 me-3">📋</span>
+					<div>
+						<h5 class="mb-1">Ver Mis Citas</h5>
+						<small>Consulta todas tus citas agendadas.</small>
+					</div>
+				</a>
 
-            <div class="col">
-                <a th:href="@{/citas/modificar}" class="text-decoration-none">
-                    <div class="card text-dark bg-warning text-center p-4">
-                        <div class="card-body">
-                            <h5 class="card-title">✏️ Actualizar Cita</h5>
-                            <p class="card-text">Edita la información de una cita existente.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+				<a th:href="@{/citas/modificar}" class="list-group-item list-group-item-action d-flex align-items-center">
+					<span class="fs-3 me-3">✏️</span>
+					<div>
+						<h5 class="mb-1">Actualizar Cita</h5>
+						<small>Edita la información de una cita existente.</small>
+					</div>
+				</a>
 
-            <div class="col">
-                <a th:href="@{/citas/eliminar}" class="text-decoration-none">
-                    <div class="card text-white bg-danger text-center p-4">
-                        <div class="card-body">
-                            <h5 class="card-title">🗑️ Eliminar Cita</h5>
-                            <p class="card-text">Cancela una cita que ya no necesites.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+				<a th:href="@{/citas/eliminar}" class="list-group-item list-group-item-action d-flex align-items-center text-danger">
+					<span class="fs-3 me-3">🗑️</span>
+					<div>
+						<h5 class="mb-1">Eliminar Cita</h5>
+						<small>Cancela una cita que ya no necesites.</small>
+					</div>
+				</a>
+			</div>
+		</div>
 
-        <div class="text-center">
-            <form th:action="@{/paciente/logout}" method="post">
-                <button class="btn btn-outline-secondary btn-sm">🚪 Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
+		<!-- Logout -->
+		<div class="text-center mt-5">
+			<form th:action="@{/paciente/logout}" method="post">
+				<button class="btn btn-outline-success btn-lg">🚪 Cerrar sesión</button>
+			</form>
+		</div>
+	</div>
 
-    <footer>
-        © 2025 - Sistema de Gestión de Citas Sanitarias · Tu salud, siempre a un clic
-    </footer>
-
+	<footer>
+		© 2025 - Sistema de Gestión de Citas Sanitarias · Tu salud, siempre a un clic
+	</footer>
 </body>
 </html>

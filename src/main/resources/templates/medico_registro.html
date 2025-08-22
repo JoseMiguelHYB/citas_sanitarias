@@ -3,19 +3,19 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Registro - Citas Sanitarias</title>
+	<title>Registro Médico - Citas Sanitarias</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-	<link rel="stylesheet" th:href="@{/css/style_paciente_registro.css}">
+	<link rel="stylesheet" th:href="@{/css/style_medico_registro.css}">
 </head>
 
 <body>
 	<div class="header-banner">
-		<strong>Gestión Sanitaria Centralizada</strong> – Accede a tus citas desde cualquier lugar, en segundos.
+		<strong>Gestión Sanitaria Centralizada</strong> – Registra médicos de forma rápida y sencilla.
 	</div>
 
 	<!-- Modo oscuro -->
@@ -40,17 +40,16 @@
 		</div>
 	</div>
 
-
 	<div class="container-login">
 
 		<!-- Flecha de regreso -->
-		<a th:href="@{ / }" class="btn-back" title="Volver al atrás">
+		<a th:href="@{ / }" class="btn-back" title="Volver al inicio">
 			<i class="bi bi-arrow-left"></i> Atrás
 		</a>
 
-		<h2>Registro de Paciente</h2>
+		<h2>Registro de Médico</h2>
 
-		<form th:action="@{/paciente/register}" th:object="${paciente}" method="post">
+		<form th:action="@{/medico/register}" th:object="${medico}" method="post">
 			<div class="row g-3">
 
 				<!-- Nombres -->
@@ -106,67 +105,63 @@
 					</select>
 				</div>
 
-				<!-- Dirección -->
+				<!-- Especialidad -->
 				<div class="col-md-6">
-					<label for="direccion" class="form-label">Dirección</label>
-					<input type="text" th:field="*{direccion}" id="direccion" class="form-control">
+					<label for="especialidad" class="form-label">Especialidad</label>
+					<input type="text" th:field="*{especialidad}" id="especialidad" class="form-control" required>
 				</div>
 
-				<!-- Localidad -->
+				<!-- Número colegiado -->
 				<div class="col-md-6">
-					<label for="localidad" class="form-label">Localidad</label>
-					<input type="text" th:field="*{localidad}" id="localidad" class="form-control">
+					<label for="numeroColegiado" class="form-label">Número de Colegiado</label>
+					<input type="text" th:field="*{numeroColegiado}" id="numeroColegiado" class="form-control" required>
 				</div>
 
-				<!-- Código postal -->
-				<div class="col-md-6">
-					<label for="codigoPostal" class="form-label">Código postal</label>
-					<input type="text" th:field="*{codigoPostal}" id="codigoPostal" class="form-control">
+				<!-- Horario de atención -->
+				<div class="col-md-3">
+					<label for="horaInicio" class="form-label">Hora inicio</label>
+					<input type="time" th:field="*{horaInicio}" id="horaInicio" class="form-control">
+				</div>
+				<div class="col-md-3">
+					<label for="horaFin" class="form-label">Hora fin</label>
+					<input type="time" th:field="*{horaFin}" id="horaFin" class="form-control">
 				</div>
 
-				<!-- Número de seguridad social -->
+				<!-- Consulta -->
 				<div class="col-md-6">
-					<label for="numeroSeguridadSocial" class="form-label">Número de seguridad social</label>
-					<input type="text" th:field="*{numeroSeguridadSocial}" id="numeroSeguridadSocial"
-						class="form-control">
+					<label for="consulta" class="form-label">Consulta</label>
+					<input type="text" th:field="*{consulta}" id="consulta" class="form-control">
 				</div>
 
-				<!-- Grupo sanguíneo -->
+				<!-- Centro de Salud -->
 				<div class="col-md-6">
-					<label for="grupoSanguineo" class="form-label">Grupo sanguíneo</label>
-					<input type="text" th:field="*{grupoSanguineo}" id="grupoSanguineo" class="form-control">
+					<label for="centroSalud" class="form-label">Centro de Salud</label>
+					<input type="text" th:field="*{centroSalud}" id="centroSalud" class="form-control">
 				</div>
 
-				<!-- Alergias -->
+				<!-- Dirección Centro -->
 				<div class="col-md-6">
-					<label for="alergias" class="form-label">Alergias</label>
-					<input type="text" th:field="*{alergias}" id="alergias" class="form-control">
+					<label for="direccionCentro" class="form-label">Dirección del Centro</label>
+					<input type="text" th:field="*{direccionCentro}" id="direccionCentro" class="form-control">
 				</div>
 
-				<!-- Contacto de emergencia -->
+				<!-- Código Postal Centro -->
 				<div class="col-md-6">
-					<label for="contactoEmergencia" class="form-label">Contacto de emergencia</label>
-					<input type="text" th:field="*{contactoEmergencia}" id="contactoEmergencia" class="form-control">
-				</div>
-
-				<!-- Seguro médico / mutua -->
-				<div class="col-md-6">
-					<label for="seguroMedicoMutua" class="form-label">Seguro médico / Mutua</label>
-					<input type="text" th:field="*{seguroMedicoMutua}" id="seguroMedicoMutua" class="form-control">
+					<label for="codigoPostalCentro" class="form-label">Código Postal del Centro</label>
+					<input type="text" th:field="*{codigoPostalCentro}" id="codigoPostalCentro" class="form-control">
 				</div>
 
 				<!-- Botón de registro -->
 				<div class="col-12 text-center mt-3">
-					<button type="submit" class="btn btn-primary">Registrarse</button>
+					<button type="submit" class="btn btn-primary">Registrar Médico</button>
 				</div>
 
 			</div>
 		</form>
 
-
 		<div class="text-center mt-2">
 			<p>¿Ya tienes una cuenta?
-				<a th:href="@{/paciente/login}" class="fw-semibold link-register">Inicia sesión</a>
+				<a th:href="@{/medicos/login}" class="fw-semibold link-register">Inicia sesión</a>
 			</p>
 		</div>
 	</div>
