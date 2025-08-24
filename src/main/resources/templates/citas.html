@@ -21,21 +21,17 @@
 			<th>Motivo</th>
 			<th>Estado</th>
 			<th>Tipo de Consulta</th>
-			<th>Ubicación</th>
-			<th>Observaciones</th>
-			<th>Duración en (minutos)</th>
-			<!--<th>Creada En</th>
-			<th>Actualizado En</th> lo especifico -->
+			
 		</tr>
 		<tr th:each="cita : ${citas}">
 			<td th:text="${cita.id}">1</td>
-			<td th:text="${cita.paciente.nombre}">Nombre del Paciente</td>
-			<td th:text="${cita.medico.nombre}">Nombre del Médico</td>
+			<td th:text="${cita.paciente.nombre} + ' ' + ${cita.paciente.apellido}">Nombre del Paciente</td>
+			
+			<td th:text="'Dr. ' + ${cita.medico.nombre} + ' ' + ${cita.medico.apellido}">Nombre del Médico</td>
 			<td th:text="${cita.fecha}">Fecha</td>
 			<td th:text="${cita.hora}">Hora</td>
 			<td th:text="${cita.motivo}">Motivo</td> <!-- Este es el campo del objeto Paciente.java -->
-			
-			
+						
 			<td th:text="${cita.estado}">Estado</td>
 			
 
@@ -46,11 +42,7 @@
 				<span th:text="${cita.tipoConsulta}"></span>
 			</td>
 			
-			<td th:text="${cita.ubicacion}">Ubicación</td>
-			<td th:text="${cita.observaciones}">Observaciones</td>
-			<td th:text="${cita.duracionMinutos}">Duración en Minutos</td>
-			<!--<td th:text="${cita.fechaCreacion}">Fecha de Creación</td>
-			<td th:text="${cita.ultimaActualizacion}">Última actualización</td>-->
+			
 		</tr>
 	</table>
 </body>

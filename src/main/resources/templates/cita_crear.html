@@ -1,62 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Crear Cita</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #e9f7f3; /* Verde muy claro similar al ejemplo */
-        }
-        h2 {
-            font-weight: bold; /* Negrita */
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <div class="card shadow p-4 rounded-3">
-        <h2 class="text-success mb-4">Crear nueva cita</h2>
-        <form th:action="@{/citas/crear}" method="post" th:object="${cita}">
-            <div class="row mb-3">
-				<div class="col-md-6">
-				    <label class="form-label">Especialidad</label>
-					<select name="especialidad" class="form-select" required>
-					    <option value="">Selecciona una especialidad</option>
-					    <option th:each="esp : ${especialidades}" 
-					            th:value="${esp}" 
-					            th:text="${esp}"></option>
-					</select>
 
+<head>
+	<meta charset="UTF-8">
+	<title>Crear Cita</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #e9f7f3;
+			/* Verde muy claro similar al ejemplo */
+		}
+
+		h2 {
+			font-weight: bold;
+			/* Negrita */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container mt-5">
+		<div class="card shadow p-4 rounded-3">
+			<h2 class="text-success mb-4">Crear nueva cita</h2>
+			<form th:action="@{/citas/crear}" method="post" th:object="${cita}">
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<label class="form-label">Especialidad</label>
+						<select name="especialidad" class="form-select" required>
+							<option value="">Selecciona una especialidad</option>
+							<option th:each="esp : ${especialidades}" th:value="${esp}" th:text="${esp}"></option>
+						</select>
+
+					</div>
 				</div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" th:field="*{fecha}" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Hora</label>
-                    <input type="time" th:field="*{hora}" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Modalidad</label>
-                    <select name="modalidad" class="form-select" required>
-                        <option value="Presencial">Presencial</option>
-                        <option value="Virtual">Virtual</option>
-                    </select>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Motivo</label>
-                <textarea th:field="*{motivo}" class="form-control" rows="3" placeholder="Describe el motivo" required></textarea>
-            </div>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-success">Guardar cita</button>
-                <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
-            </div>
-        </form>
-    </div>
-</div>
+				<div class="row mb-3">
+					<div class="col-md-4">
+						<label class="form-label">Fecha</label>
+						<input type="date" th:field="*{fecha}" class="form-control" required>
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Hora</label>
+						<input type="time" th:field="*{hora}" class="form-control" required>
+					</div>
+					<div class="col-md-4"> <label class="form-label">Tipo de Consulta</label> <select
+							th:field="*{tipoConsulta}" class="form-select" required>
+							<option value="PRESENCIAL">Presencial</option>
+							<option value="VIRTUAL">Virtual</option>
+							<option value="TELEFONICA">Telefónica</option>
+						</select> 
+					</div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Motivo</label>
+					<textarea th:field="*{motivo}" class="form-control" rows="3" placeholder="Describe el motivo"
+						required></textarea>
+				</div>
+				<div class="d-flex gap-2">
+					<button type="submit" class="btn btn-success">Guardar cita</button>
+					<button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
+
 </html>

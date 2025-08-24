@@ -104,8 +104,6 @@
 	        </div>
 	    </div>
 	</div>
-
-	
 	
 	
   <div class="container">
@@ -126,6 +124,7 @@
               <th>Especialidad</th>
 			  <th>Centro de Salud</th>
               <th>Estado</th>
+			  <th>Tipo de Consulta</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -139,6 +138,13 @@
 			  
 			  
 			  <td class="estado" th:text="${cita.estado}"></td>
+			  
+			  <td class="estado" th:switch="${cita.tipoConsulta}">
+			         <span th:case="'PRESENCIAL'">🏥 Presencial</span>
+			         <span th:case="'VIRTUAL'">💻 Virtual</span>
+			         <span th:case="'TELEFONICA'">📞 Telefónica</span>
+			         <span th:case="*">❓ Desconocido</span>
+			     </td>
 			  
 			  
               <td>
