@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Citas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+<h2>Mis Citas</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Médico</th>
+        <th>Especialidad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cita : ${citas}">
+        <td th:text="${cita.fecha}"></td>
+        <td th:text="${cita.hora}"></td>
+        <td th:text="${cita.medico.nombre}"></td>
+        <td th:text="${cita.medico.especialidad}"></td>
+        <td th:text="${cita.estado}"></td>
+        <td>
+            <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-warning btn-sm">Editar</a>
+            <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/paciente/paciente_home}" class="btn btn-secondary">Volver</a>
+</body>
+</html>

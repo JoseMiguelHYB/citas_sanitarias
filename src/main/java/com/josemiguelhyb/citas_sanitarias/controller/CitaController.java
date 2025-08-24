@@ -1,5 +1,7 @@
 package com.josemiguelhyb.citas_sanitarias.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/citas")
 public class CitaController {
-	
+
 	private final CitaService citaService;
 	private final MedicoService medicoService; // 👈 nuevo atributo
 
@@ -30,96 +32,91 @@ public class CitaController {
 		this.citaService = citaService;
 		this.medicoService = medicoService;
 	}
-	
+
 	// Listar
 	@GetMapping
 	public String listarCitas(Model model) {
 		model.addAttribute("citas", citaService.listarTodos());
-		return "citas"; // busca citas.html en /templates		
+		return "citas"; // busca citas.html en /templates
 	}
-	
+
 	// todo relacionado a la cita
-	
-	/*
-	 * 
-	 *  @GetMapping("/nueva")
-    public String mostrarFormularioNuevaCita(Model model) {
-        model.addAttribute("cita", new Cita());
-        return "citas/form"; // formulario para crear/editar
-    }
-	*/
-	
-	@PostMapping("/register")
-	public String guardarCita(@RequestParam String especialidad,
-	                          @RequestParam Long medicoId,
-	                          @ModelAttribute Cita cita,
-	                          RedirectAttributes redirectAttributes,
-	                          HttpSession session) {
 
-	    // 1. Paciente desde sesión
-	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
+	@GetMapping("/crear")
+	public String mostrarFormularioNuevaCita(Model model) {
+	    model.addAttribute("cita", new Cita());
 
-	    // 🔎 Depuración
-	    System.out.println("---- DEPURACIÓN GUARDAR CITA ----");
-	    System.out.println("Especialidad recibida: " + especialidad);
-	    System.out.println("Médico ID recibido: " + medicoId);
-	    System.out.println("Cita (fecha): " + cita.getFecha());
-	    System.out.println("Cita (hora): " + cita.getHora());
-	    System.out.println("Cita (motivo): " + cita.getMotivo());
-	    System.out.println("Paciente en sesión: " + paciente);
+	    // Sacamos todas las especialidades distintas
+	    List<String> especialidades = medicoService.listarEspecialidades(); 
+	    model.addAttribute("especialidades", especialidades);
 
-	    if (paciente != null) {
-	        System.out.println("Paciente ID: " + paciente.getId());
-	        System.out.println("Paciente Nombre: " + paciente.getNombre());
-	        System.out.println("Paciente DNI: " + paciente.getDni());
-	    } else {
-	        System.out.println("❌ No se encontró paciente en sesión");
-	    }
+	    // Opcional: médicos completos (si quieres mostrar todos en el combo)
+	    model.addAttribute("medicos", medicoService.listarTodos());
 
-	    if (paciente == null) {
-	        redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para registrar una cita");
-	        return "redirect:/login";
-	    }
-
-	    cita.setPaciente(paciente); // Guardamos todo la información del paciente
-
-	    // 2. Médico desde BD
-	    Medico medico = medicoService.buscarPorId(medicoId);
-	    System.out.println("Médico recuperado: " + medico);
-
-	    if (medico == null) {
-	        redirectAttributes.addFlashAttribute("error", "El médico no existe");
-	        return "redirect:/paciente_home";
-	    }
-	    cita.setMedico(medico);
-
-	    // 3. Estado inicial
-	    cita.setEstado(EstadoCita.PENDIENTE);
-	    System.out.println("Estado de la cita: " + cita.getEstado());
-
-	    // 4. Guardar
-	    citaService.guardar(cita);
-	    System.out.println("✅ Cita guardada correctamente con ID: " + cita.getId());
-
-	    redirectAttributes.addFlashAttribute("successMessage", "¡Gracias! Su cita ha sido creada correctamente 🎉");
-	    return "redirect:/paciente/paciente_home";
+	    return "cita_crear"; 
 	}
 
+	@PostMapping("/crear")
+	public String guardarCita(@RequestParam String especialidad, @RequestParam Long medicoId, @ModelAttribute Cita cita,
+			RedirectAttributes redirectAttributes, HttpSession session) {
 
+		// 1. Paciente desde sesión
+		Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
 
-    /**
-    @GetMapping("/editar/{id}")
-    public String editarCita(@PathVariable Long id, Model model) {
-        Cita cita = citaService.buscarPorId(id).orElseThrow(() -> new IllegalArgumentException("Cita no encontrada"));
-        model.addAttribute("cita", cita);
-        return "citas/form";
-    }
+		// 🔎 Depuración
+		System.out.println("---- DEPURACIÓN GUARDAR CITA ----");
+		System.out.println("Especialidad recibida: " + especialidad);
+		System.out.println("Médico ID recibido: " + medicoId);
+		System.out.println("Cita (fecha): " + cita.getFecha());
+		System.out.println("Cita (hora): " + cita.getHora());
+		System.out.println("Cita (motivo): " + cita.getMotivo());
+		System.out.println("Paciente en sesión: " + paciente);
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminarCita(@PathVariable Long id) {
-        citaService.eliminar(id);
-        return "redirect:/citas";
-    }
+		if (paciente != null) {
+			System.out.println("Paciente ID: " + paciente.getId());
+			System.out.println("Paciente Nombre: " + paciente.getNombre());
+			System.out.println("Paciente DNI: " + paciente.getDni());
+		} else {
+			System.out.println("❌ No se encontró paciente en sesión");
+		}
+
+		if (paciente == null) {
+			redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para registrar una cita");
+			return "redirect:/login";
+		}
+
+		cita.setPaciente(paciente); // Guardamos todo la información del paciente
+
+		// 2. Médico desde BD
+		Medico medico = medicoService.buscarPorId(medicoId);
+		System.out.println("Médico recuperado: " + medico);
+
+		if (medico == null) {
+			redirectAttributes.addFlashAttribute("error", "El médico no existe");
+			return "redirect:/paciente_home";
+		}
+		cita.setMedico(medico);
+
+		// 3. Estado inicial
+		cita.setEstado(EstadoCita.PENDIENTE);
+		System.out.println("Estado de la cita: " + cita.getEstado());
+
+		// 4. Guardar
+		citaService.guardar(cita);
+		System.out.println("✅ Cita guardada correctamente con ID: " + cita.getId());
+
+		redirectAttributes.addFlashAttribute("successMessage", "¡Gracias! Su cita ha sido creada correctamente 🎉");
+		return "redirect:/paciente/paciente_home";
+	}
+
+	/**
+	 * @GetMapping("/editar/{id}") public String editarCita(@PathVariable Long id,
+	 * Model model) { Cita cita = citaService.buscarPorId(id).orElseThrow(() -> new
+	 * IllegalArgumentException("Cita no encontrada")); model.addAttribute("cita",
+	 * cita); return "citas/form"; }
+	 * 
+	 * @GetMapping("/eliminar/{id}") public String eliminarCita(@PathVariable Long
+	 * id) { citaService.eliminar(id); return "redirect:/citas"; }
 	 * 
 	 * 
 	 * 
@@ -134,7 +131,6 @@ public class CitaController {
 	 * 
 	 * 
 	 * 
-	 * */
-	
-	
+	 */
+
 }
