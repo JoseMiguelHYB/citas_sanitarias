@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
 import com.josemiguelhyb.citas_sanitarias.model.Paciente;
 import com.josemiguelhyb.citas_sanitarias.service.MedicoService;
 import com.josemiguelhyb.citas_sanitarias.service.PacienteService;
@@ -45,36 +48,46 @@ public class PacienteAuthController {
 
 	@PostMapping("/register")
 	public String registrarPaciente(@ModelAttribute Paciente paciente, Model model) {
-		log.info("=== DATOS RECIBIDOS DEL PACIENTE ===");
-		log.info("Nombre: {}", paciente.getNombre());
-		log.info("Apellido: {}", paciente.getApellido());
-		log.info("DNI: {}", paciente.getDni());
-		log.info("Contraseña: {}", paciente.getPassword()); // ⚠️ cuidado en producción
-		log.info("Fecha de nacimiento: {}", paciente.getFechaNacimiento());
-		log.info("Email: {}", paciente.getEmail());
-		log.info("Teléfono: {}", paciente.getTelefono());
-		log.info("Género: {}", paciente.getGenero());
-		log.info("Dirección: {}", paciente.getDireccion());
-		log.info("Localidad: {}", paciente.getLocalidad());
-		log.info("Código postal: {}", paciente.getCodigoPostal());
-		log.info("Nº Seguridad Social: {}", paciente.getNumeroSeguridadSocial());
-		log.info("Grupo sanguíneo: {}", paciente.getGrupoSanguineo());
-		log.info("Alergias: {}", paciente.getAlergias());
-		log.info("Contacto emergencia: {}", paciente.getContactoEmergencia());
-		log.info("Seguro médico / mutua: {}", paciente.getSeguroMedicoMutua());
-		log.info("===================================");
+	    log.info("=== DATOS RECIBIDOS DEL PACIENTE ===");
+	    log.info("Nombre: {}", paciente.getNombre());
+	    log.info("Apellido: {}", paciente.getApellido());
+	    log.info("DNI: {}", paciente.getDni());
+	    log.info("Contraseña (antes de encriptar): {}", paciente.getPassword()); // ⚠️ solo para debug
+	    log.info("Fecha de nacimiento: {}", paciente.getFechaNacimiento());
+	    log.info("Email: {}", paciente.getEmail());
+	    log.info("Teléfono: {}", paciente.getTelefono());
+	    log.info("Género: {}", paciente.getGenero());
+	    log.info("Dirección: {}", paciente.getDireccion());
+	    log.info("Localidad: {}", paciente.getLocalidad());
+	    log.info("Código postal: {}", paciente.getCodigoPostal());
+	    log.info("Nº Seguridad Social: {}", paciente.getNumeroSeguridadSocial());
+	    log.info("Grupo sanguíneo: {}", paciente.getGrupoSanguineo());
+	    log.info("Alergias: {}", paciente.getAlergias());
+	    log.info("Contacto emergencia: {}", paciente.getContactoEmergencia());
+	    log.info("Seguro médico / mutua: {}", paciente.getSeguroMedicoMutua());
+	    log.info("===================================");
 
-		try {
-			pacienteService.guardar(paciente);
-			log.info("Paciente guardado correctamente en la base de datos ✅");
-			model.addAttribute("successMessage", "Paciente registrado correctamente");
-			return "redirect:/paciente/login"; // redirigir a este endpoint
+	    try {
+	        // Encriptar contraseña con BCrypt
+	        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	        String hashedPassword = passwordEncoder.encode(paciente.getPassword());
+	        
+	        // Debug
+	        log.info("DEBUG Registro → contraseña en claro: {}", paciente.getPassword());
+	        log.info("DEBUG Registro → hash guardado en BD: {}", hashedPassword);
+	        
+	        paciente.setPassword(hashedPassword);
+	        pacienteService.guardar(paciente);
+	        
+	        log.info("Paciente guardado correctamente en la base de datos ✅");
+	        model.addAttribute("successMessage", "Paciente registrado correctamente");
+	        return "redirect:/paciente/login";
 
-		} catch (IllegalArgumentException ex) {
-			log.warn("Paciente con DNI {} ya está registrado ❌", paciente.getDni());
-			model.addAttribute("errorMessage", ex.getMessage()); // "El DNI ya está registrado"
-			return "redirect:/paciente/registro"; // redirige a este endpoint
-		}
+	    } catch (IllegalArgumentException ex) {
+	        log.warn("Paciente con DNI {} ya está registrado ❌", paciente.getDni());
+	        model.addAttribute("errorMessage", ex.getMessage());
+	        return "redirect:/paciente/registro";
+	    }
 	}
 
 	// --------------------- Login ---------------------
@@ -85,27 +98,42 @@ public class PacienteAuthController {
 		return "paciente_login"; // esto es un paciente_login.html
 	}
 
+	// Usando ByCrypt
 	@PostMapping("/login")
-	public String loginPaciente(@RequestParam String dni, @RequestParam String password, HttpSession session,
-			RedirectAttributes redirectAttrs) {
+	public String loginPaciente(@RequestParam String dni, 
+	                            @RequestParam String password, 
+	                            HttpSession session,
+	                            RedirectAttributes redirectAttrs) {
 
-		Paciente paciente = pacienteService.buscarPorDni(dni);
+	    Paciente paciente = pacienteService.buscarPorDni(dni);
 
-		if (paciente == null) {
-			redirectAttrs.addFlashAttribute("error", "El DNI no está registrado ❌");
-			return "redirect:/paciente/login";
-		}
+	    if (paciente == null) {
+	        redirectAttrs.addFlashAttribute("error", "El DNI no está registrado ❌");
+	        return "redirect:/paciente/login";
+	    }
 
-		if (!paciente.getPassword().equals(password)) {
-			redirectAttrs.addFlashAttribute("error", "La contraseña es incorrecta 🔑");
-			return "redirect:/paciente/login";
-		}
+	    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    
+	    
+	    //  Debug
+	    log.info("DEBUG Login → contraseña introducida: {}", password);
+	    log.info("DEBUG Login → hash recuperado de BD: {}", paciente.getPassword());
+	    log.info("DEBUG Login → resultado comparación: {}", 
+	             passwordEncoder.matches(password, paciente.getPassword()));
+	    
+	    
 
-		// Si llega aquí, login correcto, guardamos en sessión
-		session.setAttribute("pacienteLogueado", paciente);
-		
-		return "redirect:/paciente/paciente_home";
+	    // Comprobamos con BCrypt
+	    if (!passwordEncoder.matches(password, paciente.getPassword())) {
+	        redirectAttrs.addFlashAttribute("error", "La contraseña es incorrecta 🔑");
+	        return "redirect:/paciente/login";
+	    }
+
+	    // Si llega aquí, login correcto
+	    session.setAttribute("pacienteLogueado", paciente);
+	    return "redirect:/paciente/paciente_home";
 	}
+
 
 	// --------------------- Home ---------------------
 
