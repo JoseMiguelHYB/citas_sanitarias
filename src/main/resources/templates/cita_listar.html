@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <title>Mis Citas</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- Script para autohide de los toasts -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.forEach(function (toastEl) {
+          const toast = new bootstrap.Toast(toastEl, {
+            autohide: true,
+            delay: 4000 // ⏱️ 4 segundos
+          });
+          toast.show();
+        });
+      });
+    </script>
+  
   <style>
     body {
       background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
@@ -63,12 +77,45 @@
       margin-top: 1rem;
     }
   </style>
+  
 </head>
 <body>
+	<!-- Toasts -->
+	<div th:if="${successMessage}" class="toast-container position-fixed top-0 end-0 p-3">
+	    <div class="toast align-items-center text-bg-success border-0 show" role="alert">
+	        <div class="d-flex">
+	            <div class="toast-body">
+	                <span th:text="${successMessage}"></span>
+	            </div>
+	            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+	                    data-bs-dismiss="toast" aria-label="Close"></button>
+	        </div>
+	    </div>
+	</div>
+
+	<div th:if="${errorMessage}" class="toast-container position-fixed top-0 end-0 p-3">
+	    <div class="toast align-items-center text-bg-danger border-0 show" role="alert">
+	        <div class="d-flex">
+	            <div class="toast-body">
+	                <span th:text="${errorMessage}"></span>
+	            </div>
+	            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+	                    data-bs-dismiss="toast" aria-label="Close"></button>
+	        </div>
+	    </div>
+	</div>
+
+	
+	
+	
   <div class="container">
     <div class="main-card">
       <h2>Mis Citas (Ver, Editar y Eliminar)</h2>
-
+	  
+	  <div class="alert alert-info mt-3" role="alert">
+	    ℹ️ <strong>Nota:</strong> El estado de tu cita será actualizado por el médico, quien puede <strong>APROBAR</strong>, <strong>RECHAZAR</strong> o <strong>POSPONER</strong> la fecha. Toda cita se inicia en estado <strong>PENDIENTE</strong>
+	  </div>
+	  
       <div class="table-responsive mt-3">
         <table class="table table-striped table-hover align-middle text-center">
           <thead>
@@ -77,6 +124,7 @@
               <th>Hora</th>
               <th>Médico</th>
               <th>Especialidad</th>
+			  <th>Centro de Salud</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -87,7 +135,11 @@
               <td th:text="${cita.hora}"></td>
 			  <td th:text="'Dr. ' + ${cita.medico.nombre} + ' ' + ${cita.medico.apellido}"></td>
 			  <td th:text="${cita.medico.especialidad}"></td>
-			  <td th:text="${cita.estado}"></td>>
+			  <td th:text="${cita.medico.centroSalud}"></td> <!-- Nueva columna -->
+			  
+			  
+			  <td class="estado" th:text="${cita.estado}"></td>
+			  
 			  
               <td>
                 <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
@@ -101,5 +153,41 @@
       <a th:href="@{/paciente/paciente_home}" class="btn btn-secondary">⬅️ Volver</a>
     </div>
   </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const estadoCells = document.querySelectorAll("td.estado");
+
+      estadoCells.forEach(cell => {
+        const estado = cell.innerText.trim();
+
+        // Cambiar solo el color del texto según el estado
+        switch (estado) {
+          case "PENDIENTE":
+            cell.style.color = "#6c757d"; // Gris
+            break;
+          case "CONFIRMADA":
+            cell.style.color = "#28a745"; // Verde
+            break;
+          case "CANCELADA":
+            cell.style.color = "#dc3545"; // Rojo
+            break;
+          case "REPROGRAMADA":
+            cell.style.color = "#fd7e14"; // Naranja
+            break;
+          case "AUSENTE":
+            cell.style.color = "#343a40"; // Negro
+            break;
+          default:
+            cell.style.color = "#000"; // Negro por defecto
+        }
+
+        cell.style.fontWeight = "bold";
+      });
+    });
+  </script>
+
+  
 </body>
+
 </html>

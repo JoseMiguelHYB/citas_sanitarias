@@ -76,7 +76,7 @@ public class CitaController {
 			return "redirect:/citas/crear";
 		}
 
-		// 3. Seleccionar uno al azar
+		// 3. Seleccionar uno al azar, es una metodología
 		Random random = new Random();
 		Medico medicoAsignado = medicos.get(random.nextInt(medicos.size()));
 		cita.setMedico(medicoAsignado);
