@@ -1,27 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Actualizar Cita</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Actualizar Cita</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      font-family: "Segoe UI", sans-serif;
+    }
+    .main-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      border-top: 6px solid #26a69a;
+      margin-top: 2rem;
+    }
+    h2 {
+      color: #00695c;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    h2::before {
+      content: "✏️";
+    }
+    .form-label {
+      font-weight: 600;
+      color: #004d40;
+    }
+    .btn {
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .btn-primary {
+      background-color: #26a69a;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #00796b;
+    }
+    .btn-secondary {
+      background-color: #b0bec5;
+      border: none;
+    }
+    .btn-secondary:hover {
+      background-color: #78909c;
+    }
+  </style>
 </head>
 <body class="container mt-4">
-<h2>Actualizar Cita</h2>
-<form th:action="@{'/citas/actualizar/' + ${cita.id}}" method="post" th:object="${cita}">
-    <div class="mb-3">
-        <label class="form-label">Fecha</label>
-        <input type="date" th:field="*{fecha}" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Hora</label>
-        <input type="time" th:field="*{hora}" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Motivo</label>
-        <textarea th:field="*{motivo}" class="form-control" rows="3" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Actualizar</button>
-    <a th:href="@{/citas/mis-citas}" class="btn btn-secondary">Cancelar</a>
-</form>
+
+  <div class="main-card">
+    <h2>Actualizar Cita</h2>
+    <form th:action="@{'/citas/editar/' + ${cita.id}}" method="post" th:object="${cita}">
+        <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="date" th:field="*{fecha}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Hora</label>
+            <input type="time" th:field="*{hora}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Motivo</label>
+            <textarea th:field="*{motivo}" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
+          <a th:href="@{/citas/mis_citas}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+  </div>
+
 </body>
 </html>

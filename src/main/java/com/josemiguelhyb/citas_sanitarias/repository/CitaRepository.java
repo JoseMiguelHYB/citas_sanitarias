@@ -3,6 +3,7 @@ package com.josemiguelhyb.citas_sanitarias.repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -25,6 +26,7 @@ public interface CitaRepository extends JpaRepository <Cita, Long> {
 
 	List<Cita> findByPacienteId(Long pacienteId);
 
-	
+	Optional<Cita> findById(Long id);
+
 	
 }

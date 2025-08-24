@@ -1,6 +1,7 @@
 package com.josemiguelhyb.citas_sanitarias.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -60,8 +61,10 @@ public class CitaService {
 	public List<Cita> listarPorPaciente(Long pacienteId) {
 	    return citaRepository.findByPacienteId(pacienteId);
 	}
-	
-	
 
+
+	public Optional<Cita> buscarPorId(Long id) {
+        return citaRepository.findById(id);
+    }
 	
 }
