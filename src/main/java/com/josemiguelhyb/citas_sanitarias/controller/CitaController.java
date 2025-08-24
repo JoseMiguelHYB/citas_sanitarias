@@ -1,6 +1,7 @@
 package com.josemiguelhyb.citas_sanitarias.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,64 +51,47 @@ public class CitaController {
 	    List<String> especialidades = medicoService.listarEspecialidades(); 
 	    model.addAttribute("especialidades", especialidades);
 
-	    // Opcional: médicos completos (si quieres mostrar todos en el combo)
-	    model.addAttribute("medicos", medicoService.listarTodos());
-
 	    return "cita_crear"; 
 	}
 
 	@PostMapping("/crear")
-	public String guardarCita(@RequestParam String especialidad, @RequestParam Long medicoId, @ModelAttribute Cita cita,
-			RedirectAttributes redirectAttributes, HttpSession session) {
+	public String guardarCita(@RequestParam String especialidad,
+	                          @ModelAttribute Cita cita,
+	                          RedirectAttributes redirectAttributes,
+	                          HttpSession session) {
 
-		// 1. Paciente desde sesión
-		Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
+	    // 1. Paciente desde sesión
+	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
+	    if (paciente == null) {
+	        redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para registrar una cita");
+	        return "redirect:/login";
+	    }
+	    cita.setPaciente(paciente);
 
-		// 🔎 Depuración
-		System.out.println("---- DEPURACIÓN GUARDAR CITA ----");
-		System.out.println("Especialidad recibida: " + especialidad);
-		System.out.println("Médico ID recibido: " + medicoId);
-		System.out.println("Cita (fecha): " + cita.getFecha());
-		System.out.println("Cita (hora): " + cita.getHora());
-		System.out.println("Cita (motivo): " + cita.getMotivo());
-		System.out.println("Paciente en sesión: " + paciente);
+	    // 2. Buscar médicos por especialidad
+	    List<Medico> medicos = medicoService.listarPorEspecialidad(especialidad);
 
-		if (paciente != null) {
-			System.out.println("Paciente ID: " + paciente.getId());
-			System.out.println("Paciente Nombre: " + paciente.getNombre());
-			System.out.println("Paciente DNI: " + paciente.getDni());
-		} else {
-			System.out.println("❌ No se encontró paciente en sesión");
-		}
+	    if (medicos == null || medicos.isEmpty()) {
+	        redirectAttributes.addFlashAttribute("error", "No hay médicos disponibles en la especialidad: " + especialidad);
+	        return "redirect:/citas/crear";
+	    }
 
-		if (paciente == null) {
-			redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para registrar una cita");
-			return "redirect:/login";
-		}
+	    // 3. Seleccionar uno al azar
+	    Random random = new Random();
+	    Medico medicoAsignado = medicos.get(random.nextInt(medicos.size()));
+	    cita.setMedico(medicoAsignado);
 
-		cita.setPaciente(paciente); // Guardamos todo la información del paciente
+	    // 4. Estado inicial
+	    cita.setEstado(EstadoCita.PENDIENTE);
 
-		// 2. Médico desde BD
-		Medico medico = medicoService.buscarPorId(medicoId);
-		System.out.println("Médico recuperado: " + medico);
+	    // 5. Guardar
+	    citaService.guardar(cita);
 
-		if (medico == null) {
-			redirectAttributes.addFlashAttribute("error", "El médico no existe");
-			return "redirect:/paciente_home";
-		}
-		cita.setMedico(medico);
-
-		// 3. Estado inicial
-		cita.setEstado(EstadoCita.PENDIENTE);
-		System.out.println("Estado de la cita: " + cita.getEstado());
-
-		// 4. Guardar
-		citaService.guardar(cita);
-		System.out.println("✅ Cita guardada correctamente con ID: " + cita.getId());
-
-		redirectAttributes.addFlashAttribute("successMessage", "¡Gracias! Su cita ha sido creada correctamente 🎉");
-		return "redirect:/paciente/paciente_home";
+	    redirectAttributes.addFlashAttribute("successMessage",
+	            "¡Gracias! Su cita ha sido creada con el Dr. " + medicoAsignado.getNombre() + " (" + especialidad + ") 🎉");
+	    return "redirect:/paciente/paciente_home";
 	}
+
 
 	/**
 	 * @GetMapping("/editar/{id}") public String editarCita(@PathVariable Long id,

@@ -59,5 +59,10 @@ public class MedicoService {
                                .map(Medico::getEspecialidad)
                                .distinct()
                                .collect(Collectors.toList());
-    }    
+    }
+
+	public List<Medico> listarPorEspecialidad(String especialidad) {
+        return medicoRepository.findByEspecialidad(especialidad);
+
+	}    
 }
