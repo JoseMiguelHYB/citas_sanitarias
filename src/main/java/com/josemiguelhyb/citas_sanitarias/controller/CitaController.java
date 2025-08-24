@@ -116,5 +116,24 @@ public class CitaController {
 	 * 
 	 * 
 	 */
+	
+	@GetMapping("/mis_citas")
+	public String listarMisCitas(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+	    // Verificamos que haya paciente logueado
+	    Paciente paciente = (Paciente) session.getAttribute("pacienteLogueado");
+	    if (paciente == null) {
+	        redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para ver tus citas");
+	        return "redirect:/login";
+	    }
+
+	    // Obtenemos citas del paciente
+	    List<Cita> misCitas = citaService.listarPorPaciente(paciente.getId());
+	    model.addAttribute("citas", misCitas);
+
+	    return "cita_listar"; // Muestra cita_listar.html
+	}
+
+	
+	
 
 }

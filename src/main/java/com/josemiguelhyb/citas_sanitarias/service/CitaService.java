@@ -55,6 +55,13 @@ public class CitaService {
 
 	    return citaRepository.save(cita);
 	}
+	
+	
+	public List<Cita> listarPorPaciente(Long pacienteId) {
+	    return citaRepository.findByPacienteId(pacienteId);
+	}
+	
+	
 
 	
 }
