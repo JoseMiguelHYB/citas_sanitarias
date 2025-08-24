@@ -67,7 +67,7 @@
 <body>
   <div class="container">
     <div class="main-card">
-      <h2>Mis Citas</h2>
+      <h2>Mis Citas (Ver, Editar y Eliminar)</h2>
 
       <div class="table-responsive mt-3">
         <table class="table table-striped table-hover align-middle text-center">
@@ -91,7 +91,7 @@
 			  
               <td>
                 <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
-                <!--<a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-danger btn-sm">🗑️ Eliminar</a>-->
+                <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
               </td>
             </tr>
           </tbody>

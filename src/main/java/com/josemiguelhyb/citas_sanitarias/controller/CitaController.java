@@ -137,11 +137,15 @@ public class CitaController {
 		return "redirect:/citas/mis_citas";
 	}
 
-	/*
-	 * ELIMINAR CITA
-	 * 
-	 * @GetMapping("/eliminar/{id}") public String eliminarCita(@PathVariable Long
-	 * id) { citaService.eliminar(id); return "redirect:/citas/mis_citas"; }
-	 */
-
+	// ELIMINAR CITA
+	@GetMapping("/eliminar/{id}")
+	public String eliminarCita(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+	    try {
+	        citaService.eliminar(id);
+	        redirectAttributes.addFlashAttribute("successMessage", "Cita eliminada correctamente 🗑️");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar la cita ❌");
+	    }
+	    return "redirect:/citas/mis_citas";
+	}
 }
