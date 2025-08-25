@@ -86,7 +86,7 @@ public class CitaController {
 
 		// 5. Guardar
 		citaService.guardar(cita);
-		
+
 		// Agregar ese paciente logueado a la lista pacientes_por_medico no crees??
 
 		redirectAttributes.addFlashAttribute("successMessage", "¡Gracias! Su cita ha sido creada con el Dr. "
@@ -104,7 +104,7 @@ public class CitaController {
 		}
 
 		// Obtenemos citas del paciente
-		List<Cita> misCitas = citaService.listarPorPaciente(paciente.getId());
+		List<Cita> misCitas = citaService.listarPorPacienteOrdenadasAsc(paciente.getId());
 		model.addAttribute("citas", misCitas);
 
 		return "cita_listar"; // Muestra cita_listar.html
@@ -142,12 +142,12 @@ public class CitaController {
 	// ELIMINAR CITA
 	@GetMapping("/eliminar/{id}")
 	public String eliminarCita(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-	    try {
-	        citaService.eliminar(id);
-	        redirectAttributes.addFlashAttribute("successMessage", "Cita eliminada correctamente 🗑️");
-	    } catch (Exception e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar la cita ❌");
-	    }
-	    return "redirect:/citas/mis_citas";
+		try {
+			citaService.eliminar(id);
+			redirectAttributes.addFlashAttribute("successMessage", "Cita eliminada correctamente 🗑️");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar la cita ❌");
+		}
+		return "redirect:/citas/mis_citas";
 	}
 }

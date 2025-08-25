@@ -6,87 +6,180 @@
 	<title>Mis Citas</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 	<style>
-		body {
-			background-color: #eaf4fb;
-			/* Azul muy claro */
+		body { background-color: #eaf4fb; }
+		.main-card {
+			background: #fff; border-radius: 16px; padding: 2rem;
+			box-shadow: 0 6px 16px rgba(0,0,0,0.12); border-top: 6px solid #005a9c; margin-top: 2rem;
 		}
-
-		h2 {
-			font-weight: bold;
-		}
-
-		.estado-programada {
-			background-color: #0d6efd;
-			color: white;
-		}
-
-		.estado-completada {
-			background-color: #6c757d;
-			color: white;
-		}
-
-		.estado-reprogramar {
-			background-color: #ffc107;
-			color: black;
-		}
-
-		.btn-accion {
-			border-radius: 10px;
-			font-size: 0.9em;
-		}
+		h2 { font-weight: bold; }
+		.btn-accion { border-radius: 10px; font-size: 0.9em; }
+		.titulo-citas { color: #005a9c; font-weight: bold; }
 	</style>
 </head>
 
 <body>
 	<div class="container mt-5">
 		<!-- Tarjeta principal -->
-		<div class="card shadow p-4 rounded-3">
-			<h2 class="text-primary mb-4">👨‍⚕️ Mis Citas</h2>
+		<div class="main-card">
+			<h2 class="titulo-citas mb-4">👨‍⚕️ Mis Citas</h2>
 			<p class="text-muted">Consulta y gestiona todas tus citas programadas.</p>
 
 			<!-- Barra de filtros -->
-			<div class="d-flex mb-3 gap-2">
-				<input type="date" class="form-control" style="max-width: 200px;">
-				<input type="text" class="form-control" placeholder="Buscar paciente o nota...">
+			<div class="d-flex flex-wrap align-items-center mb-3 gap-2 justify-content-between">
+				<div id="botonesDias" class="btn-group" role="group"></div>
+
+				<!-- Barra de búsqueda -->
+				<input id="busquedaNombre" type="text" class="form-control w-auto" placeholder="🔎 Buscar paciente...">
+
+				<!-- Botón Mostrar todas -->
+				<button id="btnMostrarTodas" class="btn btn-outline-secondary">Mostrar todas</button>
 			</div>
 
 			<!-- Tabla de citas -->
 			<table class="table table-striped align-middle">
 				<thead class="table-light">
 					<tr>
+						<th>Día</th>
 						<th>Hora</th>
 						<th>Paciente</th>
-						<th>Motivo</th>
 						<th>Estado</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="cita : ${citas}">
-						<td th:text="${cita.hora}">08:30</td>
-						<td th:text="${cita.paciente.nombre} + ' ' + ${cita.paciente.apellido}">Carlos Ficticio</td>
-						<td th:text="${cita.motivo}">Control rutinario</td>
+						<!-- Formato controlado para que el filtro compare 'yyyy-MM-dd' y 'HH:mm' -->
+						<td th:text="${#temporals.format(cita.fecha, 'yyyy-MM-dd')}">2025-08-25</td>
+						<td th:text="${#temporals.format(cita.hora, 'HH:mm')}">08:30</td>
 
-						<td th:text="${cita.estado}">ESTADO</td>
+						<!-- Concatenación correcta en Thymeleaf -->
+						<td th:text="${cita.paciente.nombre + ' ' + cita.paciente.apellido}">Carlos Ficticio</td>
 
+						<td class="estado" th:text="${cita.estado}">PENDIENTE</td>
 						<td class="d-flex gap-2">
-							<a th:if="${cita.estado == 'PENDIENTE'}"
-								th:href="@{/medicos/citas/{id}/atender(id=${cita.id})}"
-								class="btn btn-sm btn-success btn-accion">Aceptar</a>
-
-							<a th:if="${cita.estado == 'PENDIENTE'}"
-								th:href="@{/medicos/citas/{id}/cancelar(id=${cita.id})}"
-								class="btn btn-sm btn-danger btn-accion">Cancelar</a>
-
-							<a th:if="${cita.estado == 'PENDIENTE'}"
-								th:href="@{/medicos/citas/{id}/reprogramar(id=${cita.id})}"
-								class="btn btn-sm btn-warning btn-accion">Reprogramar</a>
+							<a th:href="@{/medicos/citas/{id}/atender(id=${cita.id})}" class="btn btn-sm btn-success btn-accion">Aceptar</a>
+							<a th:href="@{/medicos/citas/{id}/cancelar(id=${cita.id})}" class="btn btn-sm btn-danger btn-accion">Cancelar</a>
+							<a th:href="@{/medicos/citas/{id}/reprogramar(id=${cita.id})}" class="btn btn-sm btn-warning btn-accion">Reprogramar</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-</body>
 
+	<!-- Botón Volver -->
+	<div class="text-center mt-3">
+		<a th:href="@{/medico/medico_home}" class="btn btn-secondary btn-lg">⬅️ Volver</a>
+	</div>
+
+	<!-- SCRIPT al final -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			// Agregar emoji y color según estado
+			document.querySelectorAll("td.estado").forEach(td => {
+				let estado = td.textContent.trim().toUpperCase();
+				let emoji = "";
+				td.classList.add("fw-bold");
+
+				switch (estado) {
+					case "PENDIENTE":
+						emoji = "⏳ "; td.classList.add("text-secondary"); break;
+					case "ACEPTAR":
+					case "ACEPTADA":
+						emoji = "✅ "; td.classList.add("text-success"); break;
+					case "CANCELAR":
+					case "CANCELADA":
+						emoji = "❌ "; td.classList.add("text-danger"); break;
+					case "REPROGRAMAR":
+					case "REPROGRAMADA":
+						emoji = "🔄 "; td.classList.add("text-warning"); break;
+					default:
+						emoji = "ℹ️ "; td.classList.add("text-dark");
+				}
+				td.textContent = emoji + td.textContent.trim();
+			});
+
+			// --- FILTRO POR BOTONES ---
+			const filas = document.querySelectorAll("tbody tr");
+			const botonesDias = document.getElementById("botonesDias");
+			const btnMostrarTodas = document.getElementById("btnMostrarTodas");
+
+			// Generar botones: Hoy y próximos 4 días
+			const hoy = new Date();
+			for (let i = 0; i < 5; i++) {
+				const fecha = new Date(hoy);
+				fecha.setDate(hoy.getDate() + i);
+
+				const yyyy = fecha.getFullYear();
+				const mm = String(fecha.getMonth() + 1).padStart(2, "0");
+				const dd = String(fecha.getDate()).padStart(2, "0");
+				const valorFecha = `${yyyy}-${mm}-${dd}`;
+
+				const nombreDiaSemana = fecha.toLocaleDateString("es-ES", { weekday: "long" });
+				const diaNumero = fecha.getDate();
+
+				let nombreDia;
+				if (i === 0) {
+					nombreDia = `Hoy, ${nombreDiaSemana} ${diaNumero}`;
+				} else if (i === 1) {
+					nombreDia = `Mañana, ${nombreDiaSemana} ${diaNumero}`;
+				} else {
+					nombreDia = `${nombreDiaSemana} ${diaNumero}`;
+				}
+
+				const btn = document.createElement("button");
+				btn.className = "btn btn-outline-primary";
+				btn.textContent = nombreDia;
+				btn.onclick = () => { aplicarFiltroPorFecha(valorFecha); };
+				botonesDias.appendChild(btn);
+			}
+
+			// Función que oculta/enseña según la fecha (compara con 'yyyy-MM-dd')
+			function aplicarFiltroPorFecha(fechaFiltro) {
+				filas.forEach(fila => {
+					const dia = fila.querySelector("td:nth-child(1)").textContent.trim();
+					fila.style.display = (dia === fechaFiltro) ? "" : "none";
+				});
+			}
+
+			// Mostrar todas las citas
+			btnMostrarTodas.onclick = () => { filas.forEach(fila => fila.style.display = ""); };
+
+			// --- FILTRO POR NOMBRE ---
+			const inputBusqueda = document.getElementById("busquedaNombre");
+			inputBusqueda.addEventListener("input", () => {
+				const texto = inputBusqueda.value.toLowerCase();
+				filas.forEach(fila => {
+					const nombrePaciente = fila.querySelector("td:nth-child(3)").textContent.toLowerCase();
+					fila.style.display = nombrePaciente.includes(texto) ? "" : "none";
+				});
+			});
+		});
+		
+		// NOOO esta bien poirque el backedn tendría que devolverme se la hora ordenada
+		document.addEventListener("DOMContentLoaded", () => {
+		    // --- ORDENAR TABLA POR FECHA Y HORA ---
+		    function ordenarTabla() {
+		        const tbody = document.querySelector("tbody");
+		        const filas = Array.from(tbody.querySelectorAll("tr"));
+
+		        filas.sort((a, b) => {
+		            const fechaA = a.querySelector("td:nth-child(1)").textContent.trim(); // yyyy-MM-dd
+		            const horaA = a.querySelector("td:nth-child(2)").textContent.trim(); // HH:mm
+		            const fechaB = b.querySelector("td:nth-child(1)").textContent.trim();
+		            const horaB = b.querySelector("td:nth-child(2)").textContent.trim();
+
+		            const dateA = new Date(`${fechaA}T${horaA}:00`);
+		            const dateB = new Date(`${fechaB}T${horaB}:00`);
+
+		            return dateA - dateB; // ascendente
+		        });
+
+		        filas.forEach(f => tbody.appendChild(f));
+		    }
+
+		    ordenarTabla(); // ejecuta al cargar
+		});
+	</script>
+</body>
 </html>

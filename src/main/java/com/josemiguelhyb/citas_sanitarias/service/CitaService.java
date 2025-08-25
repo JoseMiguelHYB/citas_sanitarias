@@ -80,5 +80,9 @@ public class CitaService {
     }
 
     
+    public List<Cita> listarPorPacienteOrdenadasAsc(Long pacienteId) {
+        return citaRepository.findByPacienteIdOrderByFechaAscHoraAsc(pacienteId);
+    }
+    
 
 }

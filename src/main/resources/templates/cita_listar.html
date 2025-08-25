@@ -1,199 +1,218 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Mis Citas</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <!-- Script para autohide de los toasts -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        toastElList.forEach(function (toastEl) {
-          const toast = new bootstrap.Toast(toastEl, {
-            autohide: true,
-            delay: 4000 // ⏱️ 4 segundos
-          });
-          toast.show();
-        });
-      });
-    </script>
-  
-  <style>
-    body {
-      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-      font-family: "Segoe UI", sans-serif;
-    }
-    .main-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-      border-top: 6px solid #26a69a;
-      margin-top: 2rem;
-    }
-    h2 {
-      color: #00695c;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-    h2::before {
-      content: "📋";
-    }
-    .table {
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .table thead {
-      background-color: #26a69a;
-      color: #fff;
-    }
-    .badge {
-      font-size: 0.9rem;
-      padding: 0.5em 0.8em;
-      border-radius: 8px;
-    }
-    .btn-sm {
-      border-radius: 8px;
-      font-weight: 500;
-    }
-    .btn-warning {
-      background-color: #ffb74d;
-      border: none;
-    }
-    .btn-warning:hover {
-      background-color: #f57c00;
-    }
-    .btn-danger {
-      background-color: #ef5350;
-      border: none;
-    }
-    .btn-danger:hover {
-      background-color: #c62828;
-    }
-    .btn-secondary {
-      border-radius: 8px;
-      margin-top: 1rem;
-    }
-  </style>
-  
+	<meta charset="UTF-8">
+	<title>Mis Citas</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<!-- Script para autohide de los toasts -->
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+			toastElList.forEach(function (toastEl) {
+				const toast = new bootstrap.Toast(toastEl, {
+					autohide: true,
+					delay: 4000 // ⏱️ 4 segundos
+				});
+				toast.show();
+			});
+		});
+	</script>
+
+	<style>
+		body {
+			background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+			font-family: "Segoe UI", sans-serif;
+		}
+
+		.main-card {
+			background: #fff;
+			border-radius: 16px;
+			padding: 2rem;
+			box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+			border-top: 6px solid #26a69a;
+			margin-top: 2rem;
+		}
+
+		h2 {
+			color: #00695c;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+			gap: .5rem;
+		}
+
+		h2::before {
+			content: "📋";
+		}
+
+		.table {
+			border-radius: 12px;
+			overflow: hidden;
+		}
+
+		.table thead {
+			background-color: #26a69a;
+			color: #fff;
+		}
+
+		.badge {
+			font-size: 0.9rem;
+			padding: 0.5em 0.8em;
+			border-radius: 8px;
+		}
+
+		.btn-sm {
+			border-radius: 8px;
+			font-weight: 500;
+		}
+
+		.btn-warning {
+			background-color: #ffb74d;
+			border: none;
+		}
+
+		.btn-warning:hover {
+			background-color: #f57c00;
+		}
+
+		.btn-danger {
+			background-color: #ef5350;
+			border: none;
+		}
+
+		.btn-danger:hover {
+			background-color: #c62828;
+		}
+
+		.btn-secondary {
+			border-radius: 8px;
+			margin-top: 1rem;
+		}
+	</style>
+
 </head>
+
 <body>
 	<!-- Toasts -->
 	<div th:if="${successMessage}" class="toast-container position-fixed top-0 end-0 p-3">
-	    <div class="toast align-items-center text-bg-success border-0 show" role="alert">
-	        <div class="d-flex">
-	            <div class="toast-body">
-	                <span th:text="${successMessage}"></span>
-	            </div>
-	            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-	                    data-bs-dismiss="toast" aria-label="Close"></button>
-	        </div>
-	    </div>
+		<div class="toast align-items-center text-bg-success border-0 show" role="alert">
+			<div class="d-flex">
+				<div class="toast-body">
+					<span th:text="${successMessage}"></span>
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+					aria-label="Close"></button>
+			</div>
+		</div>
 	</div>
 
 	<div th:if="${errorMessage}" class="toast-container position-fixed top-0 end-0 p-3">
-	    <div class="toast align-items-center text-bg-danger border-0 show" role="alert">
-	        <div class="d-flex">
-	            <div class="toast-body">
-	                <span th:text="${errorMessage}"></span>
-	            </div>
-	            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-	                    data-bs-dismiss="toast" aria-label="Close"></button>
-	        </div>
-	    </div>
+		<div class="toast align-items-center text-bg-danger border-0 show" role="alert">
+			<div class="d-flex">
+				<div class="toast-body">
+					<span th:text="${errorMessage}"></span>
+				</div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+					aria-label="Close"></button>
+			</div>
+		</div>
 	</div>
-	
-	
-  <div class="container">
-    <div class="main-card">
-      <h2>Mis Citas (Ver, Editar y Eliminar)</h2>
-	  
-	  <div class="alert alert-info mt-3" role="alert">
-	    ℹ️ <strong>Nota:</strong> El estado de tu cita será actualizado por el médico, quien puede <strong>APROBAR</strong>, <strong>RECHAZAR</strong> o <strong>POSPONER</strong> la fecha. Toda cita se inicia en estado <strong>PENDIENTE</strong>
-	  </div>
-	  
-      <div class="table-responsive mt-3">
-        <table class="table table-striped table-hover align-middle text-center">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Médico</th>
-              <th>Especialidad</th>
-			  <th>Centro de Salud</th>
-              <th>Estado</th>
-			  <th>Tipo de Consulta</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="cita : ${citas}">
-              <td th:text="${cita.fecha}"></td>
-              <td th:text="${cita.hora}"></td>
-			  <td th:text="'Dr. ' + ${cita.medico.nombre} + ' ' + ${cita.medico.apellido}"></td>
-			  <td th:text="${cita.medico.especialidad}"></td>
-			  <td th:text="${cita.medico.centroSalud}"></td> <!-- Nueva columna -->
-			  
-			  
-			  <td class="estado" th:text="${cita.estado}"></td>
-			  
-			  <td class="estado" th:switch="${cita.tipoConsulta}">
-			         <span th:case="'PRESENCIAL'">🏥 Presencial</span>
-			         <span th:case="'VIRTUAL'">💻 Virtual</span>
-			         <span th:case="'TELEFONICA'">📞 Telefónica</span>
-			         <span th:case="*">❓ Desconocido</span>
-			     </td>
-			  
-			  
-              <td>
-                <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
-                <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
-      <a th:href="@{/paciente/paciente_home}" class="btn btn-secondary">⬅️ Volver</a>
-    </div>
-  </div>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const estadoCells = document.querySelectorAll("td.estado");
 
-      estadoCells.forEach(cell => {
-        const estado = cell.innerText.trim();
+	<div class="container">
+		<div class="main-card">
+			<h2>Mis Citas (Ver, Editar y Eliminar)</h2>
 
-        // Cambiar solo el color del texto según el estado
-        switch (estado) {
-          case "PENDIENTE":
-            cell.style.color = "#6c757d"; // Gris
-            break;
-          case "CONFIRMADA":
-            cell.style.color = "#28a745"; // Verde
-            break;
-          case "CANCELADA":
-            cell.style.color = "#dc3545"; // Rojo
-            break;
-          case "REPROGRAMADA":
-            cell.style.color = "#fd7e14"; // Naranja
-            break;
-          case "AUSENTE":
-            cell.style.color = "#343a40"; // Negro
-            break;
-          default:
-            cell.style.color = "#000"; // Negro por defecto
-        }
+			<div class="alert alert-info mt-3" role="alert">
+				ℹ️ <strong>Nota:</strong> El estado de tu cita será actualizado por el médico, quien puede
+				<strong>APROBAR</strong>, <strong>RECHAZAR</strong> o <strong>POSPONER</strong> la fecha. Toda cita se
+				inicia en estado <strong>PENDIENTE</strong>
+			</div>
 
-        cell.style.fontWeight = "bold";
-      });
-    });
-  </script>
+			<div class="table-responsive mt-3">
+				<table class="table table-striped table-hover align-middle text-center">
+					<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Hora</th>
+							<th>Médico</th>
+							<th>Especialidad</th>
+							<th>Centro de Salud</th>
+							<th>Estado</th>
+							<th>Tipo de Consulta</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cita : ${citas}">
+							<td th:text="${cita.fecha}"></td>
+							<td th:text="${cita.hora}"></td>
+							<td th:text="'Dr. ' + ${cita.medico.nombre} + ' ' + ${cita.medico.apellido}"></td>
+							<td th:text="${cita.medico.especialidad}"></td>
+							<td th:text="${cita.medico.centroSalud}"></td> <!-- Nueva columna -->
 
-  
+
+							<td class="estado" th:text="${cita.estado}"></td>
+
+							<td th:text="${cita.tipoConsulta}"></td>
+
+
+
+							<td>
+								<a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-warning btn-sm">✏️
+									Editar</a>
+								<a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-danger btn-sm">🗑️
+									Eliminar</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<a th:href="@{/paciente/paciente_home}" class="btn btn-secondary">⬅️ Volver</a>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const estadoCells = document.querySelectorAll("td.estado");
+
+			estadoCells.forEach(cell => {
+				const estado = cell.innerText.trim().toUpperCase(); // Asegura mayúsculas
+				let emoji = "";
+
+				switch (estado) {
+					case "PENDIENTE":
+						cell.style.color = "#6c757d"; // Gris
+						emoji = "⏳ ";
+						break;
+					case "ACEPTAR":
+						cell.style.color = "#28a745"; // Verde
+						emoji = "✅ ";
+						break;
+					case "CANCELAR":
+					case "CANCELADA":
+						cell.style.color = "#dc3545"; // Rojo
+						emoji = "❌ ";
+						break;
+					case "REPROGRAMAR":
+						cell.style.color = "#fd7e14"; // Naranja
+						emoji = "🔄 ";
+						break;
+					default:
+						cell.style.color = "#000"; // Negro por defecto
+						emoji = "ℹ️ ";
+				}
+
+				cell.style.fontWeight = "bold";
+				cell.textContent = emoji + estado;
+			});
+		});
+	</script>
+
+
+
 </body>
 
 </html>

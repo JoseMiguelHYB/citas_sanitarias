@@ -52,7 +52,7 @@ public class MedicoController {
 
 	@GetMapping("/citas/{id}/atender")
 	public String atenderCita(@PathVariable Long id) {
-		citaService.cambiarEstado(id, "COMPLETADA");
+		citaService.cambiarEstado(id, "ACEPTAR");
 		return "redirect:/medicos/pacientes";
 	}
 
