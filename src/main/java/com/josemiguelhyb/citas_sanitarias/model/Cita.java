@@ -39,9 +39,8 @@ public class Cita {
 	@Column(length = 200)
 	private String motivo; // opcional: descripción del motivo de la cita
 	
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = true, length = 20)
-	private EstadoCita estado; // PENDIENTE, CONFIRMADA, CANCELADA,...	
+	private String estado; // PENDIENTE, CONFIRMADA, CANCELADA,...	
 	
 	@Column(name = "tipo_consulta")
 	private String TipoConsulta; // Presencial/telefónica/Online
@@ -63,7 +62,7 @@ public class Cita {
 	}
 
 	public Cita(Long id, Paciente paciente, Medico medico, LocalDate fecha, LocalTime hora, String motivo,
-			EstadoCita estado, String tipoConsulta) {
+			String estado, String tipoConsulta) {
 		super();
 		this.id = id;
 		this.paciente = paciente;
@@ -123,11 +122,11 @@ public class Cita {
 		this.motivo = motivo;
 	}
 
-	public EstadoCita getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(EstadoCita estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 

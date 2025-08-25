@@ -63,5 +63,22 @@ public class CitaService {
 	public void eliminar(Long id) {
 		citaRepository.deleteById(id);
 	}
+	
+	 // Buscar citas por médico
+    public List<Cita> buscarPorMedico(Long medicoId) {
+        return citaRepository.findByMedicoId(medicoId);
+    }
+	
+    
+    @Transactional
+    public void cambiarEstado(Long id, String nuevoEstado) {
+        Cita cita = citaRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Cita no encontrada"));
+
+        cita.setEstado(nuevoEstado);
+        citaRepository.save(cita);
+    }
+
+    
 
 }

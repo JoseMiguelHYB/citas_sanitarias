@@ -82,10 +82,12 @@ public class CitaController {
 		cita.setMedico(medicoAsignado);
 
 		// 4. Estado inicial
-		cita.setEstado(EstadoCita.PENDIENTE);
+		cita.setEstado("PENDIENTE");
 
 		// 5. Guardar
 		citaService.guardar(cita);
+		
+		// Agregar ese paciente logueado a la lista pacientes_por_medico no crees??
 
 		redirectAttributes.addFlashAttribute("successMessage", "¡Gracias! Su cita ha sido creada con el Dr. "
 				+ medicoAsignado.getNombre() + " (" + especialidad + ") 🎉");
