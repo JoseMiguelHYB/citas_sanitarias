@@ -89,6 +89,12 @@
 			border-radius: 8px;
 			margin-top: 1rem;
 		}
+
+		.nombre-paciente {
+			color: black;
+			font-weight: bold;
+			/* opcional, para destacarlo más */
+		}
 	</style>
 
 </head>
@@ -122,11 +128,17 @@
 
 	<div class="container">
 		<div class="main-card">
-			<h2>Mis Citas (Ver, Editar y Eliminar)</h2>
+
+			<h2 th:if="${#lists.isEmpty(citas) == false}">
+				👨‍⚕️ Soy
+				<span th:text="${#strings.capitalize(citas[0].paciente.nombre)}" style="color: black;"></span>
+
+				y estas son todas Mis Citas (Ver, Editar y Eliminar)
+			</h2>
 
 			<div class="alert alert-info mt-3" role="alert">
 				ℹ️ <strong>Nota:</strong> El estado de tu cita será actualizado por el médico, quien puede
-				<strong>APROBAR</strong>, <strong>RECHAZAR</strong> o <strong>POSPONER</strong> la fecha. Toda cita se
+				<strong>ACEPTAR</strong>, <strong>CANCELAR</strong> o <strong>REPORGRAMAR</strong> la fecha. Toda cita se
 				inicia en estado <strong>PENDIENTE</strong>
 			</div>
 
