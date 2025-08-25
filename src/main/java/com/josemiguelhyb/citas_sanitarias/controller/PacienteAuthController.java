@@ -1,5 +1,5 @@
 // Se encarga de login, register, home, logout todo relacionado con la identididad del 
-// paciente y la sesión
+// paciente y la sesiónsss
 
 package com.josemiguelhyb.citas_sanitarias.controller;
 
